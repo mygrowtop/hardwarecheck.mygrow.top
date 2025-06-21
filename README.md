@@ -1,55 +1,96 @@
-# 硬件检测工具 (Hardware Check)
+# 硬件检测工具
 
-一个用于检测电脑硬件性能的在线工具网站，帮助用户快速测试和诊断硬件问题。
+这是一个用于检测计算机硬件性能的Web应用程序。它提供了多种检测工具，包括耳机声音检测、麦克风检测、屏幕检测等功能。
 
 ## 功能特点
 
-- **鼠标连击检测**：测试鼠标按键响应速度和连击能力
-- **鼠标滑动检测**：测试鼠标移动的平滑度和精确度
-- **键盘连击检测**：测试键盘按键的响应速度
-- **耳机声音检测**：测试耳机的音质和平衡性
-- **麦克风检测**：测试麦克风输入质量和灵敏度
-- **屏幕检测**：测试显示器的分辨率、色彩和刷新率
+- **耳机声音检测**：测试左右声道、平衡和频率响应
+- **麦克风检测**：测试麦克风音量和频率响应
+- **屏幕检测**：测试屏幕显示质量、坏点和响应速度
+- **鼠标连击检测**：测试鼠标连击速度和稳定性
+- **鼠标滑动检测**：测试鼠标移动平滑度
+- **键盘连击检测**：测试键盘按键响应速度
 
-## 技术架构
+## 技术栈
 
-- 框架：Next.js 14
-- 样式：TailwindCSS
-- 语言：TypeScript
-- 浏览器API：Web Audio API, Canvas API, Fullscreen API
+- Next.js 15
+- React 18
+- TypeScript
+- Tailwind CSS
 
 ## 本地开发
 
+1. 克隆仓库
+
 ```bash
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建生产版本
-npm run build
-
-# 启动生产服务器
-npm start
+git clone https://github.com/yourusername/hardware-check.git
+cd hardware-check
 ```
 
-## 部署
+2. 安装依赖
 
-本项目可轻松部署到Cloudflare Pages等平台:
+```bash
+npm install
+```
 
-1. 推送代码到GitHub仓库
-2. 在Cloudflare Pages中连接你的GitHub仓库
-3. 设置构建命令为 `npm run build`
-4. 设置输出目录为 `.next`
+3. 启动开发服务器
 
-## 贡献指南
+```bash
+npm run dev
+```
 
-欢迎提交PR或提出Issue来改进这个项目。在提交PR之前，请确保:
+4. 打开浏览器访问 http://localhost:3000
 
-1. 代码符合项目的编码规范
-2. 新功能有适当的测试
-3. 所有现有测试都能通过
+## 构建和部署
+
+### 构建静态文件
+
+```bash
+npm run build
+```
+
+### 部署到Cloudflare Pages
+
+1. 安装Wrangler CLI (Cloudflare的命令行工具)
+
+```bash
+npm install -g wrangler
+```
+
+2. 登录Cloudflare账户
+
+```bash
+wrangler login
+```
+
+3. 创建Pages项目
+
+在Cloudflare Dashboard中:
+- 进入Pages
+- 点击"创建应用程序"
+- 连接您的GitHub仓库
+- 设置构建配置:
+  - 构建命令: `npm run build`
+  - 输出目录: `out`
+  - 环境变量: 根据需要添加
+
+4. 部署设置
+
+- **构建命令**: `npm run build`
+- **输出目录**: `out`
+- **框架预设**: Next.js
+- **环境变量**: 根据需要添加
+
+5. 高级设置
+
+- 确保在构建设置中启用了"静态站点"选项
+- 如果需要，配置自定义域名
+
+## 注意事项
+
+- 本应用使用了Web Audio API，需要现代浏览器支持
+- 部分功能需要用户授予麦克风等权限
+- 建议使用Chrome、Firefox或Edge浏览器获得最佳体验
 
 ## 许可证
 
