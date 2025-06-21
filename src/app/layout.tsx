@@ -25,11 +25,20 @@ export default function RootLayout({
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <a href="/" className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-blue-600 dark:text-blue-400">硬件检测</span>
+                <span className="text-xl font-bold text-blue-600 dark:text-blue-400">⚡ 硬件检测</span>
               </a>
               <nav className="hidden md:flex space-x-6">
                 <a href="/" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
                   首页
+                </a>
+                <a href="/mouse-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                  鼠标连击检测
+                </a>
+                <a href="/mouse-move" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                  鼠标滑动检测
+                </a>
+                <a href="/keyboard" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                  键盘连击检测
                 </a>
                 <a href="/audio" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
                   耳机检测
