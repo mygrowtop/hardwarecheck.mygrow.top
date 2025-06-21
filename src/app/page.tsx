@@ -238,7 +238,7 @@ export default function Home() {
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
             <div className="p-6 h-full flex flex-col">
               <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标点击计数</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-sm text-gray-500 dark:text-gray-400">点击次数</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{clicks}</div>
@@ -260,7 +260,7 @@ export default function Home() {
               <button
                 onClick={handleClick}
                 disabled={timeLeft === 0}
-                className={`w-full py-6 mb-4 text-xl font-bold rounded-lg transition-all flex-grow ${
+                className={`w-full py-4 mb-4 text-xl font-bold rounded-lg transition-all flex-grow ${
                   isActive 
                     ? 'bg-blue-500 hover:bg-blue-600 text-white' 
                     : timeLeft === 0 
