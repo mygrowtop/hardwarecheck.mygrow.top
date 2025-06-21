@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   const hardwareChecks = [
-    { name: "鼠标点击计数测试", path: "/mouse-click", icon: "🖱️", description: "检测鼠标点击速度和每秒点击次数(CPS)" },
+    { name: "鼠标点击计数", path: "/mouse-click", icon: "🖱️", description: "检测鼠标点击速度和每秒点击次数(CPS)" },
     { name: "鼠标双击测试", path: "/mouse-double-click", icon: "🖱️", description: "测试鼠标左右键双击功能和响应间隔" },
     { name: "鼠标滑动检测", path: "/mouse-move", icon: "🖱️", description: "检测鼠标移动平滑度和精确度" },
     { name: "键盘计数测试", path: "/keyboard", icon: "⌨️", description: "检测键盘按键速度和每秒按键次数(KPS)" },
