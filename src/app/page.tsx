@@ -56,23 +56,6 @@ export default function Home() {
           <p className="text-gray-600 dark:text-gray-400">
             专业硬件检测工具 | 随时随地检测设备性能
           </p>
-          <div className="flex justify-center mt-4 space-x-4">
-            <a
-              href="https://github.com/yourusername/hardware-check"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-            >
-              GitHub
-            </a>
-            <span className="text-gray-400">|</span>
-            <a
-              href="#"
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-            >
-              关于我们
-            </a>
-          </div>
         </div>
       </main>
     </div>
