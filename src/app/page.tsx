@@ -24,15 +24,15 @@ export default function Home() {
   
   const startTimeRef = useRef<number>(0);
   const clickTimesRef = useRef<number[]>([]);
-  const cpsIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const cpsIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
   // CPS计时器
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     
     if (isActive) {
       interval = setInterval(() => {
-        setTimeLeft((prevTime) => {
+        setTimeLeft((prevTime: number) => {
           if (prevTime <= 1) {
             // 测试结束
             if (interval) clearInterval(interval);
@@ -69,7 +69,7 @@ export default function Home() {
         const elapsedSeconds = (now - startTimeRef.current) / 1000;
         
         // 只保留最近1秒内的点击
-        clickTimesRef.current = clickTimesRef.current.filter(time => now - time <= 1000);
+        clickTimesRef.current = clickTimesRef.current.filter((time: number) => now - time <= 1000);
         
         // 计算当前的每秒点击数（基于最近1秒的滑动窗口）
         const currentWindowCps = clickTimesRef.current.length;
@@ -155,7 +155,7 @@ export default function Home() {
   const lastRightClickRef = useRef<number>(0);
   
   // 左右键点击处理
-  const handleLeftClick = (e: React.MouseEvent) => {
+  const handleLeftClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setLeftClicks(leftClicks + 1);
     
@@ -167,7 +167,7 @@ export default function Home() {
     lastLeftClickRef.current = now;
   };
   
-  const handleRightClick = (e: React.MouseEvent) => {
+  const handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setRightClicks(rightClicks + 1);
     
@@ -209,18 +209,18 @@ export default function Home() {
               key={check.path}
               className="block group"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
-                <div className="flex items-center mb-4">
-                  <span className="text-4xl mr-4">{check.icon}</span>
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+                <div className="flex items-center mb-2">
+                  <span className="text-3xl mr-3">{check.icon}</span>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {check.name}
                   </h2>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-2 text-sm">
                   {check.description}
                 </p>
                 <div className="flex justify-end">
-                  <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200">
+                  <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200 text-sm">
                     开始检测 →
                   </span>
                 </div>
@@ -230,11 +230,14 @@ export default function Home() {
         </div>
         
         {/* 测试模块区域 */}
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">快速工具</h2>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           {/* 鼠标点击计数测试 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标点击计数测试</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
+            <div className="p-6 h-full flex flex-col">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标点击计数</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-sm text-gray-500 dark:text-gray-400">点击次数</div>
@@ -257,7 +260,7 @@ export default function Home() {
               <button
                 onClick={handleClick}
                 disabled={timeLeft === 0}
-                className={`w-full py-6 mb-4 text-xl font-bold rounded-lg transition-all ${
+                className={`w-full py-6 mb-4 text-xl font-bold rounded-lg transition-all flex-grow ${
                   isActive 
                     ? 'bg-blue-500 hover:bg-blue-600 text-white' 
                     : timeLeft === 0 
@@ -280,8 +283,8 @@ export default function Home() {
           </div>
           
           {/* 鼠标双击测试 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-            <div className="p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
+            <div className="p-6 h-full">
               <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标双击测试</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
