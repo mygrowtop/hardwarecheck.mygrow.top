@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 硬件检测工具 (Hardware Check)
 
-## Getting Started
+一个用于检测电脑硬件性能的在线工具网站，帮助用户快速测试和诊断硬件问题。
 
-First, run the development server:
+## 功能特点
+
+- **鼠标连击检测**：测试鼠标按键响应速度和连击能力
+- **鼠标滑动检测**：测试鼠标移动的平滑度和精确度
+- **键盘连击检测**：测试键盘按键的响应速度
+- **耳机声音检测**：测试耳机的音质和平衡性
+- **麦克风检测**：测试麦克风输入质量和灵敏度
+- **屏幕检测**：测试显示器的分辨率、色彩和刷新率
+
+## 技术架构
+
+- 框架：Next.js 14
+- 样式：TailwindCSS
+- 语言：TypeScript
+- 浏览器API：Web Audio API, Canvas API, Fullscreen API
+
+## 本地开发
 
 ```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# 构建生产版本
+npm run build
+
+# 启动生产服务器
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 部署
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+本项目可轻松部署到Cloudflare Pages等平台:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. 推送代码到GitHub仓库
+2. 在Cloudflare Pages中连接你的GitHub仓库
+3. 设置构建命令为 `npm run build`
+4. 设置输出目录为 `.next`
 
-## Learn More
+## 贡献指南
 
-To learn more about Next.js, take a look at the following resources:
+欢迎提交PR或提出Issue来改进这个项目。在提交PR之前，请确保:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 代码符合项目的编码规范
+2. 新功能有适当的测试
+3. 所有现有测试都能通过
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 许可证
 
-## Deploy on Vercel
+MIT
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 预览
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![硬件检测工具截图](screenshot.png)
+
+## 联系方式
+
+如有任何问题，请通过GitHub Issues联系我们。
