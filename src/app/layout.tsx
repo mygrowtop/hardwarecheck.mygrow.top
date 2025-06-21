@@ -41,7 +41,10 @@ export default function RootLayout({
                   鼠标滑动检测
                 </a>
                 <a href="/keyboard" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  键盘连击检测
+                  键盘计数测试
+                </a>
+                <a href="/keyboard-double" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                  键盘双击测试
                 </a>
                 <a href="/audio" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
                   耳机检测

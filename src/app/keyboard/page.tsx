@@ -151,9 +151,9 @@ export default function KeyboardTest() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">键盘连击检测</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">键盘计数测试</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          测试键盘响应速度和按键是否正常工作
+          测试键盘按键速度和每秒按键次数(KPS)
         </p>
       </div>
 
@@ -264,16 +264,22 @@ export default function KeyboardTest() {
         <p className="text-gray-600 dark:text-gray-400 mb-4">需要测试其他硬件吗？</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link 
+            href="/keyboard-double" 
+            className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+          >
+            键盘双击测试
+          </Link>
+          <Link 
             href="/mouse-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标连击检测
+            鼠标点击计数测试
           </Link>
           <Link 
-            href="/audio" 
+            href="/mouse-double-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            耳机声音检测
+            鼠标双击测试
           </Link>
         </div>
       </div>
