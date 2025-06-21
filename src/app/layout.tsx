@@ -19,6 +19,7 @@ export default function RootLayout({
     <html lang="zh-CN">
       <head>
         <meta charSet="utf-8" />
+        <meta name="google-site-verification" content="wqPP3gwO0ZH_hSXwMq53HHJk6J-rnFN2DukruHBFMWA" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Google Analytics */}
         <Script
