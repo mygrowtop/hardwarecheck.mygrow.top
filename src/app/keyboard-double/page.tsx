@@ -10,6 +10,7 @@ export default function KeyboardDoubleClickTest() {
     count: number;
     doubleCount: number;
     times: number[];
+    lastInterval?: number; // 最后一次按键间隔
   }[]>([]);
   
   // 当前选中的键位
@@ -18,8 +19,8 @@ export default function KeyboardDoubleClickTest() {
   // 上次按下的键
   const [lastKey, setLastKey] = useState<string>('');
   
-  // 双击时间间隔（毫秒）
-  const [doubleClickInterval, setDoubleClickInterval] = useState<number>(200);
+  // 双击时间间隔（毫秒）- 默认为80毫秒
+  const [doubleClickInterval, setDoubleClickInterval] = useState<number>(80);
   
   // 记录点击次数和双击次数
   const [totalPresses, setTotalPresses] = useState<number>(0);
@@ -88,8 +89,12 @@ export default function KeyboardDoubleClickTest() {
         // 检查是否是双击（在设定时间内连续按下同一按键）
         if (keyInfo.times.length > 0) {
           const lastPressTime = keyInfo.times[keyInfo.times.length - 1];
+          const interval = now - lastPressTime;
           
-          if (now - lastPressTime <= doubleClickInterval) {
+          // 保存最后一次按键间隔
+          keyInfo.lastInterval = interval;
+          
+          if (interval <= doubleClickInterval) {
             // 是双击
             keyInfo.doubleCount += 1;
             setTotalDoubleClicks(prev => prev + 1);
@@ -150,12 +155,12 @@ export default function KeyboardDoubleClickTest() {
     return [...keyPresses].sort((a, b) => b.count - a.count);
   };
   
-  // 根据双击间隔选择颜色
-  const getIntervalColor = () => {
-    if (doubleClickInterval <= 80) return 'bg-red-500';
-    if (doubleClickInterval <= 150) return 'bg-yellow-500';
-    if (doubleClickInterval <= 300) return 'bg-green-500';
-    return 'bg-blue-500';
+  // 根据按键间隔获取显示颜色
+  const getKeyColorClass = (interval?: number) => {
+    if (!interval) return '';
+    if (interval <= doubleClickInterval) return 'text-red-600 dark:text-red-400';
+    if (interval <= doubleClickInterval + 30) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-green-600 dark:text-green-400';
   };
   
   return (
@@ -180,8 +185,8 @@ export default function KeyboardDoubleClickTest() {
             </div>
           </div>
           
-          {/* 双击间隔调整 */}
-          <div className="mb-6">
+          {/* 双击间隔调整 - 红色框包裹 */}
+          <div className="mb-6 border-2 border-red-500 rounded-lg p-3">
             <div className="flex justify-between items-center mb-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">双击时间间隔</label>
               <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -195,7 +200,7 @@ export default function KeyboardDoubleClickTest() {
               step="10" 
               value={doubleClickInterval} 
               onChange={(e) => setDoubleClickInterval(parseInt(e.target.value))} 
-              className={`w-full h-2 rounded-lg appearance-none cursor-pointer ${getIntervalColor()}`}
+              className="w-full h-2 bg-green-500 rounded-lg appearance-none cursor-pointer"
             />
             <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
               <span>50ms</span>
@@ -203,15 +208,11 @@ export default function KeyboardDoubleClickTest() {
             </div>
           </div>
           
-          {/* 输入区域 */}
+          {/* 输入区域 - 黄色边框 */}
           <div 
             ref={inputRef}
             tabIndex={0}
-            className={`w-full h-32 mb-6 flex items-center justify-center text-center rounded-lg outline-none ${
-              isActive 
-                ? 'bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-300 dark:border-blue-700' 
-                : 'bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600'
-            }`}
+            className="w-full h-32 mb-6 flex items-center justify-center text-center rounded-lg outline-none bg-blue-50 dark:bg-blue-900/20 border-4 border-yellow-400"
           >
             {isActive ? (
               lastKey ? (
@@ -269,7 +270,9 @@ export default function KeyboardDoubleClickTest() {
                       selectedKey === keyInfo.key ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                     }`}
                   >
-                    <div className="w-1/3 font-medium text-gray-900 dark:text-white">{getKeyDisplay(keyInfo.key)}</div>
+                    <div className={`w-1/3 font-medium ${getKeyColorClass(keyInfo.lastInterval)}`}>
+                      {getKeyDisplay(keyInfo.key)}
+                    </div>
                     <div className="w-1/3 text-center text-gray-700 dark:text-gray-300">{keyInfo.count}</div>
                     <div className="w-1/3 text-center text-gray-700 dark:text-gray-300">{keyInfo.doubleCount}</div>
                   </div>
@@ -290,12 +293,22 @@ export default function KeyboardDoubleClickTest() {
               </h3>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {keyPresses.find(k => k.key === selectedKey)?.times.map((time, index, arr) => {
-                  const isDouble = index > 0 && (time - arr[index-1] <= doubleClickInterval);
+                  if (index === 0) return null; // 跳过第一个时间戳，因为没有间隔
+                  
+                  const interval = time - arr[index-1];
+                  let colorClass = '';
+                  
+                  if (interval <= doubleClickInterval) {
+                    colorClass = 'text-red-600 dark:text-red-400 font-medium';
+                  } else if (interval <= doubleClickInterval + 30) {
+                    colorClass = 'text-yellow-600 dark:text-yellow-400 font-medium';
+                  } else {
+                    colorClass = 'text-green-600 dark:text-green-400';
+                  }
+                  
                   return (
-                    <div key={index} className={`mb-1 ${isDouble ? 'text-green-600 dark:text-green-400 font-medium' : ''}`}>
-                      {index > 0 && (
-                        <span>间隔: {time - arr[index-1]}ms {isDouble && '(双击)'}</span>
-                      )}
+                    <div key={index} className={`mb-1 ${colorClass}`}>
+                      <span>间隔: {interval}ms {interval <= doubleClickInterval && '(双击)'}</span>
                     </div>
                   );
                 })}
@@ -308,8 +321,8 @@ export default function KeyboardDoubleClickTest() {
       <div className="text-center mb-8">
         <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">测试说明</h3>
         <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
-          快速按下并释放该键数次。如果键名变为红色，则表示存在重复输入问题。
-          双击的次数会与在对应的行上。双击时间间隔可以通过滑块进行调整。
+          快速按下并释放该键数次。如果键名变为红色，表示按键间隔小于设置的双击时间间隔，被识别为双击；
+          变为黄色表示接近双击时间间隔+30ms以内；变为绿色表示大于双击时间间隔+30ms。
         </p>
       </div>
       
