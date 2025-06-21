@@ -32,7 +32,10 @@ export default function RootLayout({
                   首页
                 </a>
                 <a href="/mouse-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  鼠标连击检测
+                  鼠标点击计数
+                </a>
+                <a href="/mouse-double-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
+                  鼠标双击测试
                 </a>
                 <a href="/mouse-move" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
                   鼠标滑动检测
