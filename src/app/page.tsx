@@ -210,13 +210,13 @@ export default function Home() {
               className="block group h-full"
             >
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 flex flex-col">
-                <div className="flex items-center mb-2">
+                <div className="flex items-center h-14 mb-2">
                   <span className="text-3xl mr-3">{check.icon}</span>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
                     {check.name}
                   </h2>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-2">
                   {check.description}
                 </p>
                 <div className="flex justify-end mt-auto">
