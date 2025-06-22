@@ -47,28 +47,28 @@ export default function RootLayout({
                   Home
                 </a>
                 <a href="/mouse-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Mouse Click Counter
+                  Mouse Click
                 </a>
                 <a href="/mouse-double-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Mouse Double Click Test
+                  Mouse Double
                 </a>
                 <a href="/mouse-move" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Mouse Movement Test
+                  Mouse Move
                 </a>
                 <a href="/keyboard" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Keyboard Counter Test
+                  Keyboard
                 </a>
                 <a href="/keyboard-double" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Keyboard Double Press Test
+                  Keyboard Double
                 </a>
                 <a href="/audio" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Headphone Test
+                  Headphone
                 </a>
                 <a href="/microphone" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Microphone Test
+                  Microphone
                 </a>
                 <a href="/display" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  Display Test
+                  Display
                 </a>
               </nav>
             </div>
