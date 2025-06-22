@@ -207,19 +207,19 @@ export default function Home() {
             <Link 
               href={check.path} 
               key={check.path}
-              className="block group"
+              className="block group h-full"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 flex flex-col">
                 <div className="flex items-center mb-2">
                   <span className="text-3xl mr-3">{check.icon}</span>
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {check.name}
                   </h2>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-2 text-sm">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">
                   {check.description}
                 </p>
-                <div className="flex justify-end">
+                <div className="flex justify-end mt-auto">
                   <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200 text-sm">
                     Start Test →
                   </span>
