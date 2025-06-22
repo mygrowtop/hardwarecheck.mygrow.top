@@ -14,7 +14,7 @@ export default function MouseMoveTest() {
     accuracy: 0
   });
   
-  // 绘制鼠标轨迹
+  // Draw mouse trajectory
   useEffect(() => {
     if (!canvasRef.current || points.length < 2) return;
     
@@ -22,17 +22,17 @@ export default function MouseMoveTest() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // 设置canvas尺寸为其显示尺寸
+    // Set canvas size to its display size
     const rect = canvas.getBoundingClientRect();
     if (canvas.width !== rect.width || canvas.height !== rect.height) {
       canvas.width = rect.width;
       canvas.height = rect.height;
     }
     
-    // 清空画布
+    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // 绘制轨迹
+    // Draw trajectory
     ctx.strokeStyle = '#3b82f6'; // blue-500
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
@@ -47,15 +47,15 @@ export default function MouseMoveTest() {
     
     ctx.stroke();
     
-    // 绘制起点和终点
+    // Draw start and end points
     if (points.length > 1) {
-      // 起点（绿色）
+      // Start point (green)
       ctx.fillStyle = '#10b981'; // emerald-500
       ctx.beginPath();
       ctx.arc(points[0].x, points[0].y, 5, 0, 2 * Math.PI);
       ctx.fill();
       
-      // 终点（红色）
+      // End point (red)
       ctx.fillStyle = '#ef4444'; // red-500
       ctx.beginPath();
       ctx.arc(points[points.length - 1].x, points[points.length - 1].y, 5, 0, 2 * Math.PI);
@@ -63,11 +63,11 @@ export default function MouseMoveTest() {
     }
   }, [points]);
   
-  // 计算指标
+  // Calculate metrics
   useEffect(() => {
     if (points.length < 2) return;
     
-    // 计算总距离
+    // Calculate total distance
     let totalDistance = 0;
     let angles: number[] = [];
     
@@ -76,12 +76,12 @@ export default function MouseMoveTest() {
       const dy = points[i].y - points[i-1].y;
       totalDistance += Math.sqrt(dx*dx + dy*dy);
       
-      // 计算角度变化（用于平滑度）
+      // Calculate angle changes (for smoothness)
       if (i > 1) {
         const prevDx = points[i-1].x - points[i-2].x;
         const prevDy = points[i-1].y - points[i-2].y;
         
-        // 计算两个向量间的角度
+        // Calculate angle between two vectors
         const dot = prevDx * dx + prevDy * dy;
         const prevMag = Math.sqrt(prevDx*prevDx + prevDy*prevDy);
         const curMag = Math.sqrt(dx*dx + dy*dy);
@@ -94,23 +94,23 @@ export default function MouseMoveTest() {
       }
     }
     
-    // 计算速度（像素/秒）
-    const timeTaken = points.length > 0 ? points.length / 60 : 1; // 假设60Hz
+    // Calculate speed (pixels/second)
+    const timeTaken = points.length > 0 ? points.length / 60 : 1; // Assume 60Hz
     const speed = totalDistance / timeTaken;
     
-    // 计算平滑度（角度变化的一致性）
+    // Calculate smoothness (consistency of angle changes)
     let smoothness = 0;
     if (angles.length > 0) {
       const avgAngle = angles.reduce((sum, a) => sum + a, 0) / angles.length;
       const angleVariance = angles.reduce((sum, a) => sum + Math.pow(a - avgAngle, 2), 0) / angles.length;
-      // 平滑度越高，方差越小
+      // Higher smoothness means lower variance
       smoothness = Math.max(0, 100 - (angleVariance * 100));
     }
     
-    // 计算准确度（改进版）
+    // Calculate accuracy (improved version)
     let accuracy = 0;
     if (points.length > 2) {
-      // 计算起点到终点的直线距离
+      // Calculate straight-line distance from start to end
       const startPoint = points[0];
       const endPoint = points[points.length - 1];
       const directDistance = Math.sqrt(
@@ -118,7 +118,7 @@ export default function MouseMoveTest() {
         Math.pow(endPoint.y - startPoint.y, 2)
       );
       
-      // 计算每个点之间的实际路径距离
+      // Calculate actual path distance between each point
       let pathDistance = 0;
       for (let i = 1; i < points.length; i++) {
         const dx = points[i].x - points[i-1].x;
@@ -126,11 +126,11 @@ export default function MouseMoveTest() {
         pathDistance += Math.sqrt(dx*dx + dy*dy);
       }
       
-      // 计算路径效率 (直线距离/实际路径距离)
+      // Calculate path efficiency (direct distance/actual path distance)
       const pathEfficiency = directDistance > 0 ? directDistance / pathDistance : 0;
       
-      // 计算准确度 - 结合路径效率和点的分布稳定性
-      // 计算点到直线的方差
+      // Calculate accuracy - combining path efficiency and point distribution stability
+      // Calculate variance of points from the straight line
       const startToEnd = {
         x: endPoint.x - startPoint.x,
         y: endPoint.y - startPoint.y
@@ -138,10 +138,10 @@ export default function MouseMoveTest() {
       const lineLength = Math.sqrt(startToEnd.x * startToEnd.x + startToEnd.y * startToEnd.y);
       
       if (lineLength > 0) {
-        // 获取每个点到直线的距离
+        // Get distance of each point to the line
         let deviations: number[] = [];
         for (let i = 1; i < points.length - 1; i++) {
-          // 点到直线的距离
+          // Distance from point to line
           const point = points[i];
           const deviation = Math.abs(
             (endPoint.y - startPoint.y) * point.x - 
@@ -153,23 +153,23 @@ export default function MouseMoveTest() {
           deviations.push(deviation);
         }
         
-        // 计算偏差的平均值
+        // Calculate average deviation
         const avgDeviation = deviations.length > 0 
           ? deviations.reduce((sum, d) => sum + d, 0) / deviations.length
           : 0;
         
-        // 计算偏差的一致性
+        // Calculate deviation consistency
         const deviationConsistency = deviations.length > 0
           ? 1 - Math.min(1, deviations.reduce((sum, d) => sum + Math.abs(d - avgDeviation), 0) / (deviations.length * 50))
           : 1;
         
-        // 计算最终准确度，结合路径效率和一致性
+        // Calculate final accuracy, combining path efficiency and consistency
         accuracy = Math.round(
-          (pathEfficiency * 60) + // 路径效率占比60%
-          (deviationConsistency * 40) // 轨迹一致性占比40%
+          (pathEfficiency * 60) + // Path efficiency weight 60%
+          (deviationConsistency * 40) // Trajectory consistency weight 40%
         );
         
-        // 确保值在0-100范围内
+        // Ensure value is in range 0-100
         accuracy = Math.max(0, Math.min(100, accuracy));
       }
     }
@@ -182,7 +182,7 @@ export default function MouseMoveTest() {
     });
   }, [points]);
   
-  // 鼠标移动事件处理
+  // Mouse move event handler
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isTracking || !canvasRef.current) return;
     
@@ -212,24 +212,24 @@ export default function MouseMoveTest() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">鼠标滑动检测</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Mouse Movement Test</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          测试鼠标移动的平滑度和精确度
+          Test your mouse movement smoothness and precision
         </p>
       </div>
       
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-8">
         <div className="p-6">
           <div className="mb-4">
-            <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">操作说明</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Instructions</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-2">
-              1. 点击"开始测试"按钮
+              1. Click the "Start Test" button
             </p>
             <p className="text-gray-600 dark:text-gray-300 mb-2">
-              2. 在下面的区域尝试绘制一些图形（直线、圆形或其他）
+              2. Try to draw some shapes (straight lines, circles, or others) in the area below
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-              3. 测试完成后点击"停止测试"，查看您的鼠标性能指标
+              3. After completing the test, click "Stop Test" to view your mouse performance metrics
             </p>
           </div>
           
@@ -243,7 +243,7 @@ export default function MouseMoveTest() {
                 'bg-blue-500 text-white hover:bg-blue-600'
               }`}
             >
-              开始测试
+              Start Test
             </button>
             <button
               onClick={stopTracking}
@@ -254,7 +254,7 @@ export default function MouseMoveTest() {
                 'bg-red-500 text-white hover:bg-red-600'
               }`}
             >
-              停止测试
+              Stop Test
             </button>
           </div>
           
@@ -269,26 +269,26 @@ export default function MouseMoveTest() {
             />
             {!isTracking && points.length === 0 && (
               <div className="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-gray-400">
-                点击"开始测试"并在此区域移动鼠标
+                Click "Start Test" and move your mouse in this area
               </div>
             )}
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">移动距离</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Distance</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{metrics.distance} px</div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">移动速度</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Speed</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{metrics.speed} px/s</div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">平滑度</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Smoothness</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{metrics.smoothness}%</div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">准确度</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Accuracy</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{metrics.accuracy}%</div>
             </div>
           </div>
@@ -296,49 +296,49 @@ export default function MouseMoveTest() {
       </div>
       
       <div className="text-center mt-4 mb-8">
-        <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">指标说明</h3>
+        <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Metrics Explanation</h3>
         <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-left">
-              <p className="font-medium text-gray-700 dark:text-gray-300">移动距离</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">鼠标移动的总像素距离</p>
+              <p className="font-medium text-gray-700 dark:text-gray-300">Distance</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Total pixel distance of mouse movement</p>
             </div>
             <div className="text-left">
-              <p className="font-medium text-gray-700 dark:text-gray-300">移动速度</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">鼠标移动的平均速度(像素/秒)</p>
+              <p className="font-medium text-gray-700 dark:text-gray-300">Speed</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Average speed of mouse movement (pixels/second)</p>
             </div>
             <div className="text-left">
-              <p className="font-medium text-gray-700 dark:text-gray-300">平滑度</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">鼠标移动轨迹的平滑程度，越高表示越平滑</p>
+              <p className="font-medium text-gray-700 dark:text-gray-300">Smoothness</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Smoothness of mouse movement trajectory, higher is smoother</p>
             </div>
             <div className="text-left">
-              <p className="font-medium text-gray-700 dark:text-gray-300">准确度</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">鼠标移动的路径效率和稳定性，越高表示移动越精准</p>
+              <p className="font-medium text-gray-700 dark:text-gray-300">Accuracy</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Path efficiency and stability of mouse movement, higher is more precise</p>
             </div>
           </div>
         </div>
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">需要测试其他硬件吗？</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Need to test other hardware?</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link 
             href="/mouse-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标点击计数测试
+            Mouse Click Counter
           </Link>
           <Link 
             href="/mouse-double-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标双击测试
+            Mouse Double Click Test
           </Link>
           <Link 
             href="/keyboard" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            键盘连击检测
+            Keyboard Counter Test
           </Link>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function DisplayTest() {
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
-  // 获取屏幕信息
+  // Get screen information
   useEffect(() => {
     setScreenInfo({
       width: window.screen.width,
@@ -34,7 +34,7 @@ export default function DisplayTest() {
       refreshRate: window.screen.height,
     });
     
-    // 检测实际刷新率
+    // Detect actual refresh rate
     if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
       try {
         const video = document.createElement('video');
@@ -55,7 +55,7 @@ export default function DisplayTest() {
             lastTimeRef.current = now;
           }
           
-          // @ts-ignore (TypeScript 可能不认识这个API)
+          // @ts-ignore (TypeScript may not recognize this API)
           requestIdRef.current = video.requestVideoFrameCallback(calculateRefreshRate);
         };
         
@@ -67,19 +67,19 @@ export default function DisplayTest() {
           video.cancelVideoFrameCallback(requestIdRef.current);
         };
       } catch (err) {
-        console.error('获取刷新率失败:', err);
+        console.error('Failed to get refresh rate:', err);
       }
     }
   }, []);
   
-  // 进入/退出全屏
+  // Enter/exit fullscreen
   const toggleFullscreen = () => {
     if (!fullscreen) {
       if (fullscreenRef.current && fullscreenRef.current.requestFullscreen) {
         fullscreenRef.current.requestFullscreen().then(() => {
           setFullscreen(true);
         }).catch(err => {
-          console.error('全屏模式失败:', err);
+          console.error('Fullscreen mode failed:', err);
         });
       }
     } else {
@@ -87,13 +87,13 @@ export default function DisplayTest() {
         document.exitFullscreen().then(() => {
           setFullscreen(false);
         }).catch(err => {
-          console.error('退出全屏模式失败:', err);
+          console.error('Exit fullscreen mode failed:', err);
         });
       }
     }
   };
   
-  // 全屏变化监听
+  // Fullscreen change listener
   useEffect(() => {
     const handleFullscreenChange = () => {
       setFullscreen(!!document.fullscreenElement);
@@ -106,9 +106,9 @@ export default function DisplayTest() {
     };
   }, []);
   
-  // 坏点测试颜色自动变化
+  // Dead pixel test automatic color change
   useEffect(() => {
-    // 清理之前的定时器
+    // Clear previous timers
     if (colorIntervalRef.current) {
       clearInterval(colorIntervalRef.current);
       colorIntervalRef.current = null;
@@ -123,29 +123,29 @@ export default function DisplayTest() {
       const colors = ['#FFFFFF', '#000000', '#FF0000', '#00FF00', '#0000FF'];
       let colorIndex = 0;
       
-      // 设置初始颜色和倒计时
+      // Set initial color and countdown
       setDeadPixelColor(colors[colorIndex]);
       setCountdown(5);
       
-      // 创建倒计时定时器，每秒更新一次
+      // Create countdown timer, update once per second
       countdownIntervalRef.current = setInterval(() => {
         setCountdown(prev => {
           if (prev <= 1) {
-            return 5; // 重置为5秒
+            return 5; // Reset to 5 seconds
           }
           return prev - 1;
         });
       }, 1000);
       
-      // 创建新的定时器，每5秒切换一次颜色
+      // Create new timer, switch color every 5 seconds
       colorIntervalRef.current = setInterval(() => {
         colorIndex = (colorIndex + 1) % colors.length;
         setDeadPixelColor(colors[colorIndex]);
-        setCountdown(5); // 重置倒计时
+        setCountdown(5); // Reset countdown
       }, 5000);
     }
     
-    // 组件卸载或测试变更时清理定时器
+    // Clean up timers when component unmounts or test changes
     return () => {
       if (colorIntervalRef.current) {
         clearInterval(colorIntervalRef.current);
@@ -172,7 +172,7 @@ export default function DisplayTest() {
     }
   };
   
-  // 渲染颜色测试
+  // Render color test
   const renderColorTest = (testType: string) => {
     if (!canvasRef.current) return;
     
@@ -184,10 +184,10 @@ export default function DisplayTest() {
     const height = canvas.height;
     
     if (testType === 'colors') {
-      // 基本颜色测试
+      // Basic color test
       ctx.clearRect(0, 0, width, height);
       
-      // 绘制主要颜色块
+      // Draw main color blocks
       const colors = ['#FF0000', '#00FF00', '#0000FF', '#000000', '#FFFFFF', 
                       '#FFFF00', '#FF00FF', '#00FFFF', '#FF8000', '#8000FF'];
       
@@ -201,24 +201,24 @@ export default function DisplayTest() {
         ctx.fillStyle = colors[i];
         ctx.fillRect(x, y, blockWidth, blockHeight);
         
-        // 添加色值标签
+        // Add color value label
         ctx.fillStyle = colors[i] === '#000000' ? '#FFFFFF' : '#000000';
         ctx.font = '12px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(colors[i], x + blockWidth / 2, y + blockHeight / 2);
       }
     } else if (testType === 'gradients') {
-      // 渐变测试
+      // Gradient test
       ctx.clearRect(0, 0, width, height);
       
-      // 水平黑白渐变
+      // Horizontal black-white gradient
       const bwGradient = ctx.createLinearGradient(0, 0, width, 0);
       bwGradient.addColorStop(0, 'black');
       bwGradient.addColorStop(1, 'white');
       ctx.fillStyle = bwGradient;
       ctx.fillRect(0, 0, width, height / 4);
       
-      // RGB渐变
+      // RGB gradient
       const rgbGradient = ctx.createLinearGradient(0, 0, width, 0);
       rgbGradient.addColorStop(0, 'red');
       rgbGradient.addColorStop(0.33, 'green');
@@ -227,7 +227,7 @@ export default function DisplayTest() {
       ctx.fillStyle = rgbGradient;
       ctx.fillRect(0, height / 4, width, height / 4);
       
-      // 彩虹渐变
+      // Rainbow gradient
       const rainbowGradient = ctx.createLinearGradient(0, 0, width, 0);
       rainbowGradient.addColorStop(0, 'red');
       rainbowGradient.addColorStop(0.17, 'orange');
@@ -239,7 +239,7 @@ export default function DisplayTest() {
       ctx.fillStyle = rainbowGradient;
       ctx.fillRect(0, height / 2, width, height / 4);
       
-      // 灰度渐变
+      // Grayscale gradient
       const grayGradient = ctx.createLinearGradient(0, 0, width, 0);
       for (let i = 0; i <= 1; i += 0.1) {
         const grayValue = Math.floor(i * 255);
@@ -251,7 +251,7 @@ export default function DisplayTest() {
     }
   };
   
-  // 调整Canvas大小
+  // Adjust Canvas size
   useEffect(() => {
     const updateCanvasSize = () => {
       if (canvasRef.current) {
@@ -262,17 +262,17 @@ export default function DisplayTest() {
         canvasRef.current.width = rect.width;
         canvasRef.current.height = rect.height;
         
-        // 如果有活动测试，重新渲染
+        // If active test exists, re-render
         if (activeTest === 'colors' || activeTest === 'gradients') {
           renderColorTest(activeTest);
         }
       }
     };
     
-    // 初始调整
+    // Initial adjustment
     updateCanvasSize();
     
-    // 窗口大小变化时调整
+    // Adjust when window size changes
     window.addEventListener('resize', updateCanvasSize);
     
     return () => {
@@ -280,22 +280,22 @@ export default function DisplayTest() {
     };
   }, [activeTest]);
   
-  // 测试选项
+  // Test options
   const tests = [
-    { id: 'colors', name: '基本颜色测试', description: '检查屏幕是否能正确显示所有基本颜色' },
-    { id: 'gradients', name: '渐变测试', description: '检查屏幕的色彩过渡是否平滑' },
-    { id: 'deadPixels', name: '坏点测试', description: '检测屏幕是否有坏点或亮点' },
-    { id: 'response', name: '响应速度测试', description: '测试屏幕响应速度和拖影情况' }
+    { id: 'colors', name: 'Basic Color Test', description: 'Check if your screen displays all basic colors correctly' },
+    { id: 'gradients', name: 'Gradient Test', description: 'Check if color transitions are smooth on your screen' },
+    { id: 'deadPixels', name: 'Dead Pixel Test', description: 'Detect if your screen has dead or stuck pixels' },
+    { id: 'response', name: 'Response Time Test', description: 'Test screen response time and motion blur' }
   ];
   
-  // 获取颜色名称
+  // Get color name
   const getColorName = (color: string) => {
     switch(color) {
-      case '#FFFFFF': return '白色';
-      case '#000000': return '黑色';
-      case '#FF0000': return '红色';
-      case '#00FF00': return '绿色';
-      case '#0000FF': return '蓝色';
+      case '#FFFFFF': return 'White';
+      case '#000000': return 'Black';
+      case '#FF0000': return 'Red';
+      case '#00FF00': return 'Green';
+      case '#0000FF': return 'Blue';
       default: return color;
     }
   };
@@ -303,9 +303,9 @@ export default function DisplayTest() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">屏幕检测</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Display Test</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          测试您的屏幕显示质量和性能
+          Test your screen display quality and performance
         </p>
       </div>
 
@@ -313,22 +313,22 @@ export default function DisplayTest() {
         <div className="p-6">
           <div className="flex flex-col md:flex-row mb-6 gap-6">
             <div className="md:w-1/2">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">屏幕信息</h2>
+              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Screen Information</h2>
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                 <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-300">分辨率</span>
+                  <span className="text-gray-600 dark:text-gray-300">Resolution</span>
                   <span className="font-medium text-gray-900 dark:text-white">{screenInfo.width} × {screenInfo.height}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-300">色彩深度</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{screenInfo.colorDepth} 位</span>
+                  <span className="text-gray-600 dark:text-gray-300">Color Depth</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{screenInfo.colorDepth} bit</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-600">
-                  <span className="text-gray-600 dark:text-gray-300">像素深度</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{screenInfo.pixelDepth} 位</span>
+                  <span className="text-gray-600 dark:text-gray-300">Pixel Depth</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{screenInfo.pixelDepth} bit</span>
                 </div>
                 <div className="flex justify-between py-2">
-                  <span className="text-gray-600 dark:text-gray-300">估计刷新率</span>
+                  <span className="text-gray-600 dark:text-gray-300">Estimated Refresh Rate</span>
                   <span className="font-medium text-gray-900 dark:text-white">{screenInfo.refreshRate} Hz</span>
                 </div>
               </div>
@@ -338,23 +338,23 @@ export default function DisplayTest() {
                   onClick={toggleFullscreen}
                   className="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all"
                 >
-                  {fullscreen ? '退出全屏' : '进入全屏模式测试'}
+                  {fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen Mode'}
                 </button>
               </div>
               
               <div className="mt-6">
-                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">测试说明</h3>
+                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Test Instructions</h3>
                 <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1 text-sm">
-                  <li>基本颜色测试：观察所有颜色是否正确显示，无异常</li>
-                  <li>渐变测试：检查渐变是否平滑，没有明显的色带</li>
-                  <li>坏点测试：在全屏模式下仔细查看屏幕是否有坏点</li>
-                  <li>响应速度：移动光标观察是否有明显的拖影和延迟</li>
+                  <li>Basic Color Test: Check if all colors display correctly without abnormalities</li>
+                  <li>Gradient Test: Check if gradients are smooth with no visible banding</li>
+                  <li>Dead Pixel Test: Carefully check for dead pixels in fullscreen mode</li>
+                  <li>Response Time: Move your cursor to check for motion blur and delay</li>
                 </ul>
               </div>
             </div>
             
             <div className="md:w-1/2">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">选择测试</h2>
+              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Select Test</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {tests.map(test => (
                   <button
@@ -392,7 +392,7 @@ export default function DisplayTest() {
                     <div className="relative">
                       <div className="absolute w-20 h-20 bg-blue-500 rounded-full animate-ping opacity-75"></div>
                       <div className="relative w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white">
-                        跟随
+                        Follow
                       </div>
                     </div>
                   </div>
@@ -400,13 +400,13 @@ export default function DisplayTest() {
                 
                 {activeTest === 'deadPixels' && (
                   <div className="absolute top-2 right-2 bg-black/50 text-white px-3 py-1 rounded-lg text-sm">
-                    当前: {getColorName(deadPixelColor)} ({countdown}秒)
+                    Current: {getColorName(deadPixelColor)} ({countdown}s)
                   </div>
                 )}
                 
                 {!activeTest && (
                   <div className="absolute inset-0 w-full h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
-                    选择一个测试项目开始
+                    Select a test to begin
                   </div>
                 )}
               </div>
@@ -415,7 +415,7 @@ export default function DisplayTest() {
         </div>
       </div>
       
-      {/* 全屏测试区域 */}
+      {/* Fullscreen test area */}
       <div
         ref={fullscreenRef}
         className={`fixed inset-0 bg-white dark:bg-black z-50 ${fullscreen ? 'flex' : 'hidden'} flex-col items-center justify-center`}
@@ -423,7 +423,7 @@ export default function DisplayTest() {
         {fullscreen && activeTest === 'deadPixels' && (
           <div className="w-full h-full" style={{ backgroundColor: deadPixelColor }}>
             <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-lg text-sm">
-              按ESC退出全屏 | 当前: {getColorName(deadPixelColor)} ({countdown}秒)
+              Press ESC to exit fullscreen | Current: {getColorName(deadPixelColor)} ({countdown}s)
             </div>
           </div>
         )}
@@ -435,7 +435,7 @@ export default function DisplayTest() {
               className="w-full h-full"
             />
             <div className="absolute top-4 right-4 bg-black/30 text-white px-3 py-1 rounded-lg text-sm">
-              按ESC退出全屏
+              Press ESC to exit fullscreen
             </div>
           </div>
         )}
@@ -445,30 +445,30 @@ export default function DisplayTest() {
             <div className="relative">
               <div className="absolute w-32 h-32 bg-blue-500 rounded-full animate-ping opacity-75"></div>
               <div className="relative w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl">
-                跟随
+                Follow
               </div>
             </div>
             <div className="absolute top-4 right-4 bg-black/30 text-white px-3 py-1 rounded-lg text-sm">
-              按ESC退出全屏 | 移动鼠标观察拖影情况
+              Press ESC to exit fullscreen | Move cursor to check for motion blur
             </div>
           </div>
         )}
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">需要测试其他硬件吗？</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Need to test other hardware?</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link 
             href="/mouse-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标连击检测
+            Mouse Click Test
           </Link>
           <Link 
             href="/keyboard" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            键盘连击检测
+            Keyboard Test
           </Link>
         </div>
       </div>

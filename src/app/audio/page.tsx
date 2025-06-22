@@ -6,82 +6,82 @@ import Link from 'next/link';
 export default function AudioTest() {
   const [activeTest, setActiveTest] = useState<string | null>(null);
   const [volume, setVolume] = useState<number>(0.5);
-  const [balance, setBalance] = useState<number>(0); // -1 (左) 到 1 (右)
-  const [frequency, setFrequency] = useState<number>(440); // 默认为A4音高
-  const defaultFrequency = 440; // 默认频率常量
+  const [balance, setBalance] = useState<number>(0); // -1 (left) to 1 (right)
+  const [frequency, setFrequency] = useState<number>(440); // Default to A4 pitch
+  const defaultFrequency = 440; // Default frequency constant
   
-  // 音频上下文
+  // Audio context
   const audioContextRef = useRef<AudioContext | null>(null);
   const oscillatorRef = useRef<OscillatorNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
   const pannerRef = useRef<StereoPannerNode | null>(null);
   
-  // 测试选项
+  // Test options
   const tests = [
-    { id: 'left', name: '左声道测试', description: '测试左耳机是否正常工作' },
-    { id: 'right', name: '右声道测试', description: '测试右耳机是否正常工作' },
-    { id: 'balance', name: '平衡测试', description: '测试左右声道的平衡性' },
-    { id: 'frequency', name: '频率测试', description: '测试不同频率下的响应' },
+    { id: 'left', name: 'Left Channel Test', description: 'Test if left earphone works properly' },
+    { id: 'right', name: 'Right Channel Test', description: 'Test if right earphone works properly' },
+    { id: 'balance', name: 'Balance Test', description: 'Test the balance between left and right channels' },
+    { id: 'frequency', name: 'Frequency Test', description: 'Test response at different frequencies' },
   ];
 
-  // 频率预设
+  // Frequency presets
   const frequencyPresets = [
-    { value: 60, name: '超低音 (60Hz)' },
-    { value: 250, name: '低音 (250Hz)' },
-    { value: 440, name: '中音 (440Hz)' },
-    { value: 2000, name: '高音 (2000Hz)' },
-    { value: 10000, name: '超高音 (10000Hz)' }
+    { value: 60, name: 'Sub-bass (60Hz)' },
+    { value: 250, name: 'Bass (250Hz)' },
+    { value: 440, name: 'Mid-range (440Hz)' },
+    { value: 2000, name: 'Treble (2000Hz)' },
+    { value: 10000, name: 'High Treble (10000Hz)' }
   ];
   
-  // 初始化音频上下文
+  // Initialize audio context
   const initAudioContext = () => {
     if (!audioContextRef.current) {
       try {
-        // 创建音频上下文
+        // Create audio context
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-        console.log('音频上下文已创建');
+        console.log('Audio context created');
       } catch (error) {
-        console.error('创建音频上下文失败:', error);
+        console.error('Failed to create audio context:', error);
       }
     }
     return audioContextRef.current;
   };
   
-  // 确保音频上下文处于活跃状态
+  // Ensure audio context is active
   const ensureAudioContext = async () => {
     const audioContext = initAudioContext();
     if (audioContext && audioContext.state === 'suspended') {
       try {
         await audioContext.resume();
-        console.log('音频上下文已恢复');
+        console.log('Audio context resumed');
       } catch (err) {
-        console.error('恢复音频上下文失败:', err);
+        console.error('Failed to resume audio context:', err);
       }
     }
   };
   
-  // 在组件卸载时清理资源
+  // Clean up resources when component unmounts
   useEffect(() => {
     return () => {
       stopTest();
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
         try {
           audioContextRef.current.close();
-          console.log('音频上下文已关闭');
+          console.log('Audio context closed');
         } catch (e) {
-          console.error('关闭音频上下文失败:', e);
+          console.error('Failed to close audio context:', e);
         }
       }
     };
   }, []);
   
-  // 停止当前测试
+  // Stop current test
   const stopTest = () => {
     if (oscillatorRef.current) {
       try {
         oscillatorRef.current.stop();
       } catch (e) {
-        // 忽略已经停止的错误
+        // Ignore errors for already stopped oscillators
       }
       oscillatorRef.current = null;
     }
@@ -103,80 +103,80 @@ export default function AudioTest() {
     setActiveTest(null);
   };
   
-  // 更新平衡
+  // Update balance
   const updateBalance = (balanceValue: number) => {
     if (!audioContextRef.current || !pannerRef.current) return;
     pannerRef.current.pan.value = balanceValue;
   };
   
-  // 开始测试
+  // Start test
   const startTest = async (testId: string) => {
-    // 如果点击当前测试，则停止
+    // If clicking the current test, stop it
     if (testId === activeTest) {
       stopTest();
       return;
     }
     
-    // 停止当前测试
+    // Stop current test
     stopTest();
     
-    // 设置新的测试状态
+    // Set new test state
     setActiveTest(testId);
     
-    // 如果不是频率测试，重置频率到默认值
+    // If not a frequency test, reset frequency to default
     if (testId !== 'frequency') {
       setFrequency(defaultFrequency);
     }
     
-    // 确保音频上下文是活跃的
+    // Ensure audio context is active
     await ensureAudioContext();
     if (!audioContextRef.current) return;
     
     try {
-      // 创建节点
+      // Create nodes
       oscillatorRef.current = audioContextRef.current.createOscillator();
       gainNodeRef.current = audioContextRef.current.createGain();
       pannerRef.current = audioContextRef.current.createStereoPanner();
       
-      // 设置振荡器参数
+      // Set oscillator parameters
       oscillatorRef.current.type = 'sine';
       oscillatorRef.current.frequency.value = testId === 'frequency' ? frequency : defaultFrequency;
       
-      // 设置音量
+      // Set volume
       gainNodeRef.current.gain.value = volume;
       
-      // 连接节点
+      // Connect nodes
       oscillatorRef.current.connect(gainNodeRef.current);
       gainNodeRef.current.connect(pannerRef.current);
       pannerRef.current.connect(audioContextRef.current.destination);
       
-      // 根据测试类型设置平移
+      // Set panning based on test type
       switch (testId) {
         case 'left':
-          pannerRef.current.pan.value = -1; // 全左
+          pannerRef.current.pan.value = -1; // Full left
           break;
         case 'right':
-          pannerRef.current.pan.value = 1; // 全右
+          pannerRef.current.pan.value = 1; // Full right
           break;
         case 'balance':
-          pannerRef.current.pan.value = balance; // 使用平衡滑块的值
+          pannerRef.current.pan.value = balance; // Use balance slider value
           break;
         case 'frequency':
-          pannerRef.current.pan.value = 0; // 居中
+          pannerRef.current.pan.value = 0; // Center
           break;
       }
       
-      // 开始产生声音
+      // Start generating sound
       oscillatorRef.current.start();
-      console.log(`${testId} 测试已启动`);
+      console.log(`${testId} test started`);
       
     } catch (error) {
-      console.error('启动测试失败:', error);
+      console.error('Failed to start test:', error);
       setActiveTest(null);
     }
   };
   
-  // 处理音量变化
+  // Handle volume change
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
@@ -186,18 +186,18 @@ export default function AudioTest() {
     }
   };
   
-  // 处理平衡变化
+  // Handle balance change
   const handleBalanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newBalance = parseFloat(e.target.value);
     setBalance(newBalance);
     
-    // 如果当前在播放声音且是平衡测试，更新平衡
+    // If currently playing sound and it's a balance test, update balance
     if (activeTest === 'balance') {
       updateBalance(newBalance);
     }
   };
   
-  // 处理频率变化
+  // Handle frequency change
   const handleFrequencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFrequency = parseInt(e.target.value);
     setFrequency(newFrequency);
@@ -207,7 +207,7 @@ export default function AudioTest() {
     }
   };
   
-  // 选择频率预设
+  // Select frequency preset
   const selectFrequencyPreset = (freq: number) => {
     setFrequency(freq);
     
@@ -216,7 +216,7 @@ export default function AudioTest() {
     }
   };
   
-  // 用户交互时确保音频上下文可以启动
+  // Ensure audio context can start on user interaction
   const handleUserInteraction = () => {
     ensureAudioContext();
   };
@@ -224,9 +224,9 @@ export default function AudioTest() {
   return (
     <div className="container mx-auto px-4 py-8" onClick={handleUserInteraction}>
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">耳机声音检测</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Headphone Sound Test</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          请确保佩戴耳机并调整系统音量到合适的水平
+          Please wear headphones and adjust your system volume to an appropriate level
         </p>
       </div>
 
@@ -234,7 +234,7 @@ export default function AudioTest() {
         <div className="p-6">
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">音量控制</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Volume Control</h2>
               <span className="text-gray-500 dark:text-gray-400">{Math.round(volume * 100)}%</span>
             </div>
             <input
@@ -252,14 +252,14 @@ export default function AudioTest() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  左右平衡
+                  Left/Right Balance
                 </h2>
                 <span className="text-gray-500 dark:text-gray-400">
                   {balance === 0 
-                    ? "中间" 
+                    ? "Center" 
                     : balance < 0 
-                      ? `左 ${Math.round(Math.abs(balance) * 100)}%` 
-                      : `右 ${Math.round(balance * 100)}%`
+                      ? `Left ${Math.round(Math.abs(balance) * 100)}%` 
+                      : `Right ${Math.round(balance * 100)}%`
                   }
                 </span>
               </div>
@@ -274,9 +274,9 @@ export default function AudioTest() {
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">左</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">中间</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">右</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Left</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Center</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Right</span>
                 </div>
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function AudioTest() {
           {activeTest === 'frequency' && (
             <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">频率测试</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Frequency Test</h2>
                 <span className="text-gray-500 dark:text-gray-400">{frequency} Hz</span>
               </div>
               <input
@@ -346,7 +346,7 @@ export default function AudioTest() {
               }`}
               disabled={!activeTest}
             >
-              停止测试
+              Stop Test
             </button>
           </div>
         </div>
@@ -354,34 +354,34 @@ export default function AudioTest() {
 
       <div className="max-w-3xl mx-auto">
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-8">
-          <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-2">使用提示</h2>
+          <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-2">Usage Tips</h2>
           <ul className="list-disc list-inside space-y-1 text-blue-700 dark:text-blue-300">
-            <li>请佩戴耳机进行测试，以获得最佳效果</li>
-            <li>先从低音量开始，然后逐渐调整到合适的音量</li>
-            <li>左右声道测试时，您应该只能从一侧耳机听到声音</li>
-            <li>点击"平衡测试"按钮，可以调整左右声道的音量比例</li>
-            <li>频率测试可以帮助检测耳机的频响范围</li>
-            <li>如果听不到某些频率，可能是耳机频响范围的限制或听力问题</li>
+            <li>Please wear headphones during testing for best results</li>
+            <li>Start with low volume and gradually adjust to a comfortable level</li>
+            <li>During left/right channel tests, you should only hear sound from one side</li>
+            <li>Click the "Balance Test" button to adjust the volume ratio between left and right channels</li>
+            <li>The frequency test helps check your headphones' frequency response range</li>
+            <li>If you can't hear certain frequencies, it may be due to headphone limitations or hearing issues</li>
           </ul>
         </div>
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">需要测试其他硬件吗？</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Need to test other hardware?</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link 
             href="/microphone" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
             onClick={stopTest}
           >
-            麦克风检测
+            Microphone Test
           </Link>
           <Link 
             href="/display" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
             onClick={stopTest}
           >
-            屏幕检测
+            Display Test
           </Link>
         </div>
       </div>

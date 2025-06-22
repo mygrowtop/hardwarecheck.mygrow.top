@@ -5,17 +5,17 @@ import Link from "next/link";
 
 export default function Home() {
   const hardwareChecks = [
-    { name: "鼠标点击计数", path: "/mouse-click", icon: "🖱️", description: "检测鼠标点击速度和每秒点击次数(CPS)" },
-    { name: "鼠标双击测试", path: "/mouse-double-click", icon: "🖱️", description: "测试鼠标左右键双击功能和响应间隔" },
-    { name: "鼠标滑动检测", path: "/mouse-move", icon: "🖱️", description: "检测鼠标移动平滑度和精确度" },
-    { name: "键盘计数测试", path: "/keyboard", icon: "⌨️", description: "检测键盘按键速度和每秒按键次数(KPS)" },
-    { name: "键盘双击测试", path: "/keyboard-double", icon: "⌨️", description: "测试键盘是否可以双击，检测重复输入问题" },
-    { name: "耳机声音检测", path: "/audio", icon: "🎧", description: "检测耳机音质和平衡性" },
-    { name: "麦克风检测", path: "/microphone", icon: "🎤", description: "检测麦克风音质和灵敏度" },
-    { name: "屏幕检测", path: "/display", icon: "🖥️", description: "检测屏幕亮度、色彩和刷新率" },
+    { name: "Mouse Click Counter", path: "/mouse-click", icon: "🖱️", description: "Detect mouse click speed and clicks per second (CPS)" },
+    { name: "Mouse Double Click Test", path: "/mouse-double-click", icon: "🖱️", description: "Test mouse left/right double click function and response interval" },
+    { name: "Mouse Movement Test", path: "/mouse-move", icon: "🖱️", description: "Test mouse movement smoothness and precision" },
+    { name: "Keyboard Counter Test", path: "/keyboard", icon: "⌨️", description: "Test keyboard press speed and keys per second (KPS)" },
+    { name: "Keyboard Double Press Test", path: "/keyboard-double", icon: "⌨️", description: "Test if keyboard can double press, detect repeated input issues" },
+    { name: "Headphone Sound Test", path: "/audio", icon: "🎧", description: "Test headphone sound quality and balance" },
+    { name: "Microphone Test", path: "/microphone", icon: "🎤", description: "Test microphone sound quality and sensitivity" },
+    { name: "Display Test", path: "/display", icon: "🖥️", description: "Test screen brightness, color and refresh rate" },
   ];
   
-  // ========= 鼠标点击计数测试功能 =========
+  // ========= Mouse Click Counter Test =========
   const [clicks, setClicks] = useState<number>(0);
   const [cps, setCps] = useState<number>(0);
   const [maxCps, setMaxCps] = useState<number>(0);
@@ -26,7 +26,7 @@ export default function Home() {
   const clickTimesRef = useRef<number[]>([]);
   const cpsIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
-  // CPS计时器
+  // CPS timer
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
     
@@ -34,11 +34,11 @@ export default function Home() {
       interval = setInterval(() => {
         setTimeLeft((prevTime: number) => {
           if (prevTime <= 1) {
-            // 测试结束
+            // Test end
             if (interval) clearInterval(interval);
             setIsActive(false);
             
-            // 计算最终CPS
+            // Calculate final CPS
             const finalCps = clicks / 10;
             setCps(Math.round(finalCps * 10) / 10);
             
@@ -54,52 +54,52 @@ export default function Home() {
     };
   }, [isActive, clicks]);
   
-  // 使用滑动窗口计算实时CPS
+  // Using sliding window to calculate real-time CPS
   useEffect(() => {
     if (isActive) {
-      // 初始化开始时间
+      // Initialize start time
       if (!startTimeRef.current) {
         startTimeRef.current = Date.now();
         clickTimesRef.current = [];
       }
       
-      // 创建一个计算CPS的定时器
+      // Create a timer for calculating CPS
       cpsIntervalRef.current = setInterval(() => {
         const now = Date.now();
         const elapsedSeconds = (now - startTimeRef.current) / 1000;
         
-        // 只保留最近1秒内的点击
+        // Keep only clicks within the last 1 second
         clickTimesRef.current = clickTimesRef.current.filter((time: number) => now - time <= 1000);
         
-        // 计算当前的每秒点击数（基于最近1秒的滑动窗口）
+        // Calculate current clicks per second (based on the last 1 second sliding window)
         const currentWindowCps = clickTimesRef.current.length;
         
-        // 计算整体平均CPS
+        // Calculate overall average CPS
         const overallCps = elapsedSeconds > 0 ? clicks / elapsedSeconds : 0;
         
-        // 取滑动窗口和整体平均中较合理的值
+        // Take the more reasonable value from sliding window and overall average
         const calculatedCps = Math.max(
-          Math.min(currentWindowCps, clicks), // 防止由于滑动窗口导致的CPS过高
-          elapsedSeconds >= 1 ? overallCps : 0 // 至少经过1秒后才考虑整体平均
+          Math.min(currentWindowCps, clicks), // Prevent CPS from being too high due to sliding window
+          elapsedSeconds >= 1 ? overallCps : 0 // Only consider overall average after at least 1 second
         );
         
-        // 更新CPS，保留一位小数
+        // Update CPS, keeping one decimal place
         const roundedCps = Math.round(calculatedCps * 10) / 10;
         setCps(roundedCps);
         
-        // 更新最高CPS
+        // Update maximum CPS
         if (roundedCps > maxCps) {
           setMaxCps(roundedCps);
         }
       }, 100);
     } else {
-      // 停止CPS计算
+      // Stop CPS calculation
       if (cpsIntervalRef.current) {
         clearInterval(cpsIntervalRef.current);
         cpsIntervalRef.current = null;
       }
       
-      // 重置开始时间
+      // Reset start time
       if (!isActive && timeLeft === 10) {
         startTimeRef.current = 0;
         clickTimesRef.current = [];
@@ -113,10 +113,10 @@ export default function Home() {
     };
   }, [isActive, clicks, maxCps, timeLeft]);
   
-  // 点击处理函数
+  // Click handler
   const handleClick = () => {
     if (!isActive && timeLeft === 10) {
-      // 开始测试
+      // Start test
       setIsActive(true);
       setClicks(1);
       setCps(0);
@@ -124,13 +124,13 @@ export default function Home() {
       startTimeRef.current = Date.now();
       clickTimesRef.current = [Date.now()];
     } else if (isActive) {
-      // 记录点击时间和增加计数
+      // Record click time and increase count
       clickTimesRef.current.push(Date.now());
       setClicks(clicks + 1);
     }
   };
   
-  // 重置函数
+  // Reset function
   const resetClickTest = () => {
     setIsActive(false);
     setClicks(0);
@@ -141,25 +141,25 @@ export default function Home() {
     clickTimesRef.current = [];
   };
   
-  // ========= 鼠标双击测试功能 =========
+  // ========= Mouse Double Click Test =========
   const [leftClicks, setLeftClicks] = useState<number>(0);
   const [rightClicks, setRightClicks] = useState<number>(0);
   const [leftDoubleClicks, setLeftDoubleClicks] = useState<number>(0);
   const [rightDoubleClicks, setRightDoubleClicks] = useState<number>(0);
   
-  // 时间间隔设置（单位：毫秒）- 默认为80毫秒
+  // Time interval setting (unit: milliseconds) - default is 80ms
   const [doubleClickInterval, setDoubleClickInterval] = useState<number>(80);
   
-  // 双击检测
+  // Double click detection
   const lastLeftClickRef = useRef<number>(0);
   const lastRightClickRef = useRef<number>(0);
   
-  // 左右键点击处理
+  // Left/right click handler
   const handleLeftClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setLeftClicks(leftClicks + 1);
     
-    // 检测双击
+    // Detect double click
     const now = Date.now();
     if (now - lastLeftClickRef.current <= doubleClickInterval) {
       setLeftDoubleClicks(leftDoubleClicks + 1);
@@ -171,7 +171,7 @@ export default function Home() {
     e.preventDefault();
     setRightClicks(rightClicks + 1);
     
-    // 检测双击
+    // Detect double click
     const now = Date.now();
     if (now - lastRightClickRef.current <= doubleClickInterval) {
       setRightDoubleClicks(rightDoubleClicks + 1);
@@ -179,7 +179,7 @@ export default function Home() {
     lastRightClickRef.current = now;
   };
   
-  // 重置测试
+  // Reset test
   const resetDoubleClickTest = () => {
     setLeftClicks(0);
     setRightClicks(0);
@@ -194,14 +194,14 @@ export default function Home() {
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            硬件检测工具
+            Hardware Testing Tools
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            全面检测您的设备性能，确保最佳使用体验
+            Comprehensive testing of your device performance for optimal user experience
           </p>
         </div>
 
-        {/* 硬件检测工具卡片 */}
+        {/* Hardware testing tool cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {hardwareChecks.map((check) => (
             <Link 
@@ -221,7 +221,7 @@ export default function Home() {
                 </p>
                 <div className="flex justify-end">
                   <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200 text-sm">
-                    开始检测 →
+                    Start Test →
                   </span>
                 </div>
               </div>
@@ -229,30 +229,30 @@ export default function Home() {
           ))}
         </div>
         
-        {/* 测试模块区域 */}
+        {/* Test module area */}
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">快速工具</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Quick Tools</h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-          {/* 鼠标点击计数测试 */}
+          {/* Mouse click counter test */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
             <div className="p-6 h-full flex flex-col">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标点击计数</h2>
+              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Click Counter</h2>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">点击次数</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Clicks</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{clicks}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">每秒点击</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Clicks Per Second</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{cps}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">最高CPS</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Max CPS</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{maxCps}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">剩余时间</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Time Left</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{timeLeft}s</div>
                 </div>
               </div>
@@ -268,7 +268,7 @@ export default function Home() {
                       : 'bg-blue-500 hover:bg-blue-600 text-white'
                 }`}
               >
-                {!isActive && timeLeft === 10 ? '点击开始测试' : isActive ? '快速点击此处！' : '测试完成'}
+                {!isActive && timeLeft === 10 ? 'Click to Start Test' : isActive ? 'Click Here Quickly!' : 'Test Completed'}
               </button>
               
               {timeLeft === 0 && (
@@ -276,38 +276,38 @@ export default function Home() {
                   onClick={resetClickTest}
                   className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
                 >
-                  重新测试
+                  Test Again
                 </button>
               )}
             </div>
           </div>
           
-          {/* 鼠标双击测试 */}
+          {/* Mouse double click test */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
             <div className="p-6 h-full">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">鼠标双击测试</h2>
+              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Double Click Test</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">左键点击</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Left Clicks</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftClicks}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">左键双击</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Left Double Clicks</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftDoubleClicks}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">右键点击</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Right Clicks</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightClicks}</div>
                 </div>
                 <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">右键双击</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Right Double Clicks</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightDoubleClicks}</div>
                 </div>
               </div>
               
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">双击时间间隔 (毫秒)</label>
+                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Double Click Interval (milliseconds)</label>
                   <span className="text-sm text-gray-600 dark:text-gray-400">{doubleClickInterval} ms</span>
                 </div>
                 <input 
@@ -336,7 +336,7 @@ export default function Home() {
                       <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
                     </div>
                   </div>
-                  <p className="absolute text-white font-medium">左键测试区域</p>
+                  <p className="absolute text-white font-medium">Left Click Test Area</p>
                 </div>
                 
                 <div 
@@ -349,7 +349,7 @@ export default function Home() {
                       <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
                     </div>
                   </div>
-                  <p className="absolute text-white font-medium">右键测试区域</p>
+                  <p className="absolute text-white font-medium">Right Click Test Area</p>
                 </div>
               </div>
               
@@ -357,7 +357,7 @@ export default function Home() {
                 onClick={resetDoubleClickTest}
                 className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
               >
-                重置测试
+                Reset Test
               </button>
             </div>
           </div>
@@ -365,7 +365,7 @@ export default function Home() {
 
         <div className="mt-16 text-center">
           <p className="text-gray-600 dark:text-gray-400">
-            专业硬件检测工具 | 随时随地检测设备性能
+            Professional Hardware Testing Tools | Test Your Device Performance Anytime, Anywhere
           </p>
         </div>
       </main>

@@ -4,38 +4,38 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 export default function KeyboardDoubleClickTest() {
-  // 键位和双击次数
+  // Key positions and double click counts
   const [keyPresses, setKeyPresses] = useState<{
     key: string;
     count: number;
     doubleCount: number;
     times: number[];
-    lastInterval?: number; // 最后一次按键间隔
+    lastInterval?: number; // Last key press interval
   }[]>([]);
   
-  // 当前选中的键位
+  // Currently selected key
   const [selectedKey, setSelectedKey] = useState<string>('');
   
-  // 上次按下的键
+  // Last pressed key
   const [lastKey, setLastKey] = useState<string>('');
   
-  // 双击时间间隔（毫秒）- 默认为80毫秒
+  // Double-click time interval (milliseconds) - default is 80ms
   const [doubleClickInterval, setDoubleClickInterval] = useState<number>(80);
   
-  // 记录点击次数和双击次数
+  // Record click counts and double-click counts
   const [totalPresses, setTotalPresses] = useState<number>(0);
   const [totalDoubleClicks, setTotalDoubleClicks] = useState<number>(0);
   
-  // 测试是否激活
+  // Is test active
   const [isActive, setIsActive] = useState<boolean>(false);
   
-  // 输入区域引用
+  // Input area reference
   const inputRef = useRef<HTMLDivElement>(null);
   
-  // 最后一次按键间隔时间
+  // Last key press interval time
   const [lastKeyInterval, setLastKeyInterval] = useState<number | null>(null);
   
-  // 键盘按键映射，用于显示更友好的按键名称
+  // Keyboard key mapping for displaying more friendly key names
   const keyDisplayNames: { [key: string]: string } = {
     ' ': 'Space',
     'ArrowUp': '↑',
@@ -53,39 +53,39 @@ export default function KeyboardDoubleClickTest() {
     'Escape': 'Esc',
   };
   
-  // 获取显示的按键名
+  // Get display key name
   const getKeyDisplay = (key: string) => {
     return keyDisplayNames[key] || key;
   };
   
-  // 根据按键间隔获取输入区域的背景颜色
+  // Get input area background color based on key interval
   const getInputBoxStyle = () => {
     if (!isActive || lastKeyInterval === null) {
       return {
-        backgroundColor: '#f0f4ff', // 默认淡蓝色背景
+        backgroundColor: '#f0f4ff', // Default light blue background
         color: '#1e293b'
       };
     }
     
     if (lastKeyInterval <= doubleClickInterval) {
       return {
-        backgroundColor: '#fee2e2', // 红色背景
-        color: '#b91c1c' // 红色文字
+        backgroundColor: '#fee2e2', // Red background
+        color: '#b91c1c' // Red text
       };
     } else if (lastKeyInterval <= doubleClickInterval + 30) {
       return {
-        backgroundColor: '#fef3c7', // 黄色背景
-        color: '#b45309' // 黄色文字
+        backgroundColor: '#fef3c7', // Yellow background
+        color: '#b45309' // Yellow text
       };
     } else {
       return {
-        backgroundColor: '#dcfce7', // 绿色背景
-        color: '#166534' // 绿色文字
+        backgroundColor: '#dcfce7', // Green background
+        color: '#166534' // Green text
       };
     }
   };
   
-  // 处理键盘按下事件
+  // Handle keyboard keydown events
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isActive) return;
@@ -96,11 +96,11 @@ export default function KeyboardDoubleClickTest() {
       const now = Date.now();
       setLastKey(key);
       
-      // 检查按键是否已存在
+      // Check if key already exists
       const keyIndex = keyPresses.findIndex(k => k.key === key);
       
       if (keyIndex === -1) {
-        // 新键位
+        // New key
         setKeyPresses(prev => [
           ...prev,
           {
@@ -111,31 +111,31 @@ export default function KeyboardDoubleClickTest() {
           }
         ]);
         setTotalPresses(prev => prev + 1);
-        setLastKeyInterval(null); // 第一次按下，没有间隔
+        setLastKeyInterval(null); // First press, no interval
       } else {
-        // 已存在的键位
+        // Existing key
         const updatedPresses = [...keyPresses];
         const keyInfo = updatedPresses[keyIndex];
         
-        // 检查是否是双击（在设定时间内连续按下同一按键）
+        // Check if it's a double-click (pressing the same key continuously within the set time)
         if (keyInfo.times.length > 0) {
           const lastPressTime = keyInfo.times[keyInfo.times.length - 1];
           const interval = now - lastPressTime;
           
-          // 更新最后一次按键间隔
+          // Update last key press interval
           keyInfo.lastInterval = interval;
           setLastKeyInterval(interval);
           
           if (interval <= doubleClickInterval) {
-            // 是双击
+            // It's a double-click
             keyInfo.doubleCount += 1;
             setTotalDoubleClicks(prev => prev + 1);
           }
         }
         
-        // 更新计数和时间
+        // Update count and time
         keyInfo.count += 1;
-        keyInfo.times = [...keyInfo.times.slice(-9), now]; // 只保留最近10次
+        keyInfo.times = [...keyInfo.times.slice(-9), now]; // Keep only the last 10
         updatedPresses[keyIndex] = keyInfo;
         
         setKeyPresses(updatedPresses);
@@ -160,7 +160,7 @@ export default function KeyboardDoubleClickTest() {
     setTotalDoubleClicks(0);
     setLastKeyInterval(null);
     
-    // 聚焦到输入区域
+    // Focus on input area
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -179,17 +179,17 @@ export default function KeyboardDoubleClickTest() {
     setLastKeyInterval(null);
   };
   
-  // 更改当前选中的键
+  // Change the currently selected key
   const selectKey = (key: string) => {
     setSelectedKey(key === selectedKey ? '' : key);
   };
   
-  // 获取排序后的按键列表
+  // Get sorted key list
   const getSortedKeys = () => {
     return [...keyPresses].sort((a, b) => b.count - a.count);
   };
   
-  // 根据按键间隔获取显示颜色
+  // Get display color based on key interval
   const getKeyColorClass = (interval?: number) => {
     if (!interval) return '';
     if (interval <= doubleClickInterval) return 'text-red-600 dark:text-red-400';
@@ -202,9 +202,9 @@ export default function KeyboardDoubleClickTest() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">键盘双击测试</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Keyboard Double Press Test</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          测试您的键盘是否可以双击，类似于鼠标双击测试
+          Test if your keyboard can register double-presses, similar to a mouse double-click test
         </p>
       </div>
       
@@ -212,19 +212,19 @@ export default function KeyboardDoubleClickTest() {
         <div className="p-6">
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">键盘点击次数</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Key Presses</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalPresses}</div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-sm text-gray-500 dark:text-gray-400">双击次数</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Double Presses</div>
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalDoubleClicks}</div>
             </div>
           </div>
           
-          {/* 双击间隔调整 */}
+          {/* Double-click interval adjustment */}
           <div className="mb-6 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
             <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">双击时间间隔</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Double-click Interval</label>
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {doubleClickInterval} ms
               </span>
@@ -244,7 +244,7 @@ export default function KeyboardDoubleClickTest() {
             </div>
           </div>
           
-          {/* 输入区域 - 根据按键间隔变色 */}
+          {/* Input area - changes color based on key interval */}
           <div 
             ref={inputRef}
             tabIndex={0}
@@ -254,53 +254,53 @@ export default function KeyboardDoubleClickTest() {
             {isActive ? (
               lastKey ? (
                 <div className="text-center">
-                  <div className="text-sm opacity-75">上次按键</div>
+                  <div className="text-sm opacity-75">Last Key</div>
                   <div className="text-3xl font-bold">{getKeyDisplay(lastKey)}</div>
                   {lastKeyInterval !== null && (
                     <div className="text-sm mt-1 opacity-75">
-                      间隔: {lastKeyInterval}ms
+                      Interval: {lastKeyInterval}ms
                     </div>
                   )}
                 </div>
               ) : (
-                <p>请按任意键...</p>
+                <p>Press any key...</p>
               )
             ) : (
-              <p>点击"开始测试"后在此区域进行键盘输入</p>
+              <p>Click "Start Test" then press keys in this area</p>
             )}
           </div>
           
-          {/* 按钮组 */}
+          {/* Button group */}
           <div className="flex space-x-4 mb-6">
             {!isActive ? (
               <button
                 onClick={startTest}
                 className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all"
               >
-                开始测试
+                Start Test
               </button>
             ) : (
               <button
                 onClick={stopTest}
                 className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-all"
               >
-                停止测试
+                Stop Test
               </button>
             )}
             <button
               onClick={resetTest}
               className="flex-1 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
             >
-              重置
+              Reset
             </button>
           </div>
           
-          {/* 按键信息表格 */}
+          {/* Key info table */}
           <div className="overflow-hidden bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex bg-gray-50 dark:bg-gray-700 px-4 py-3 text-sm font-medium">
-              <div className="w-1/3 text-gray-500 dark:text-gray-300">键位</div>
-              <div className="w-1/3 text-center text-gray-500 dark:text-gray-300">点击次数</div>
-              <div className="w-1/3 text-center text-gray-500 dark:text-gray-300">双击次数</div>
+              <div className="w-1/3 text-gray-500 dark:text-gray-300">Key</div>
+              <div className="w-1/3 text-center text-gray-500 dark:text-gray-300">Press Count</div>
+              <div className="w-1/3 text-center text-gray-500 dark:text-gray-300">Double Press Count</div>
             </div>
             <div className="divide-y divide-gray-200 dark:divide-gray-700" style={{ maxHeight: '250px', overflowY: 'auto' }}>
               {getSortedKeys().length > 0 ? (
@@ -321,21 +321,21 @@ export default function KeyboardDoubleClickTest() {
                 ))
               ) : (
                 <div className="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                  暂无按键数据
+                  No key data yet
                 </div>
               )}
             </div>
           </div>
           
-          {/* 选中按键的详细信息 */}
+          {/* Selected key detailed info */}
           {selectedKey && (
             <div className="mt-6 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {getKeyDisplay(selectedKey)} 键的时间记录
+                Time records for key {getKeyDisplay(selectedKey)}
               </h3>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {keyPresses.find(k => k.key === selectedKey)?.times.map((time, index, arr) => {
-                  if (index === 0) return null; // 跳过第一个时间戳，因为没有间隔
+                  if (index === 0) return null; // Skip the first timestamp, as there's no interval
                   
                   const interval = time - arr[index-1];
                   let colorClass = '';
@@ -350,7 +350,7 @@ export default function KeyboardDoubleClickTest() {
                   
                   return (
                     <div key={index} className={`mb-1 ${colorClass}`}>
-                      <span>间隔: {interval}ms {interval <= doubleClickInterval && '(双击)'}</span>
+                      <span>Interval: {interval}ms {interval <= doubleClickInterval && '(Double Press)'}</span>
                     </div>
                   );
                 })}
@@ -361,33 +361,33 @@ export default function KeyboardDoubleClickTest() {
       </div>
       
       <div className="text-center mb-8">
-        <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">测试说明</h3>
+        <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">Test Instructions</h3>
         <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
-          快速按下并释放该键数次。输入框背景会根据按键间隔变色：
-          红色表示按键间隔小于设置的双击时间；黄色表示接近双击时间+30ms以内；绿色表示大于双击时间+30ms。
+          Quickly press and release a key several times. The input box background will change color based on press interval:
+          Red indicates an interval less than the set double-click time; Yellow indicates within 30ms over the double-click time; Green indicates more than the double-click time+30ms.
         </p>
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">需要测试其他硬件吗？</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Need to test other hardware?</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Link 
             href="/keyboard" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            键盘计数测试
+            Keyboard Counter Test
           </Link>
           <Link 
             href="/mouse-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标点击计数测试
+            Mouse Click Counter
           </Link>
           <Link 
             href="/mouse-double-click" 
             className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
           >
-            鼠标双击测试
+            Mouse Double Click Test
           </Link>
         </div>
       </div>

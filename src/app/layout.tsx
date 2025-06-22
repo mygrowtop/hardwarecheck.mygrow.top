@@ -6,8 +6,8 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "硬件检测工具",
-  description: "全面检测您的设备性能，确保最佳使用体验",
+  title: "Hardware Testing Tools",
+  description: "Comprehensive testing of your device performance for optimal user experience",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="google-site-verification" content="wqPP3gwO0ZH_hSXwMq53HHJk6J-rnFN2DukruHBFMWA" />
@@ -40,35 +40,35 @@ export default function RootLayout({
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <a href="/" className="flex items-center space-x-2">
-                <span className="text-xl font-bold text-blue-600 dark:text-blue-400">⚡ 硬件检测</span>
+                <span className="text-xl font-bold text-blue-600 dark:text-blue-400">⚡ Hardware Testing</span>
               </a>
               <nav className="hidden md:flex space-x-6">
                 <a href="/" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  首页
+                  Home
                 </a>
                 <a href="/mouse-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  鼠标点击计数
+                  Mouse Click Counter
                 </a>
                 <a href="/mouse-double-click" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  鼠标双击测试
+                  Mouse Double Click Test
                 </a>
                 <a href="/mouse-move" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  鼠标滑动检测
+                  Mouse Movement Test
                 </a>
                 <a href="/keyboard" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  键盘计数测试
+                  Keyboard Counter Test
                 </a>
                 <a href="/keyboard-double" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  键盘双击测试
+                  Keyboard Double Press Test
                 </a>
                 <a href="/audio" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  耳机检测
+                  Headphone Test
                 </a>
                 <a href="/microphone" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  麦克风检测
+                  Microphone Test
                 </a>
                 <a href="/display" className="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400">
-                  屏幕检测
+                  Display Test
                 </a>
               </nav>
             </div>
@@ -77,7 +77,7 @@ export default function RootLayout({
         {children}
         <footer className="mt-auto py-6 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
           <div className="container mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
-            <p>© {new Date().getFullYear()} 硬件检测工具 | 版权所有</p>
+            <p>© {new Date().getFullYear()} Hardware Testing Tools | All Rights Reserved</p>
           </div>
         </footer>
       </body>
