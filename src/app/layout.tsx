@@ -89,12 +89,6 @@ export default function RootLayout({
         <footer className="mt-auto py-6 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
           <div className="container mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
             <p>© {new Date().getFullYear()} Hardware Testing Tools | All Rights Reserved</p>
-            <div className="mt-2 space-x-4">
-              <a href="/about" className="hover:text-blue-500">About</a>
-              <a href="/privacy" className="hover:text-blue-500">Privacy Policy</a>
-              <a href="/terms" className="hover:text-blue-500">Terms of Use</a>
-              <a href="/contact" className="hover:text-blue-500">Contact Us</a>
-            </div>
           </div>
         </footer>
       </body>

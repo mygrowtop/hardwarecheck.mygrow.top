@@ -546,12 +546,9 @@ export default function Home() {
             <p className="text-xl mb-8 max-w-2xl mx-auto">
               Select a test from our comprehensive suite and start diagnosing your hardware performance today.
             </p>
-            <div className="flex justify-center space-x-4">
+            <div className="flex justify-center">
               <a href="/mouse-click" className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all">
                 Start Testing Now
-              </a>
-              <a href="/about" className="border border-white text-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-semibold transition-all">
-                Learn More
               </a>
             </div>
           </div>
@@ -562,7 +559,7 @@ export default function Home() {
             Professional Hardware Testing Tools | Test Your Device Performance Anytime, Anywhere
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Last Updated: June 2025 | <a href="/blog" className="text-blue-500 hover:underline">Read our hardware testing blog</a>
+            Last Updated: June 2025
           </p>
         </div>
       </main>
