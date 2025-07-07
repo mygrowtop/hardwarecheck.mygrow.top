@@ -213,39 +213,28 @@ export default function Home() {
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Online Hardware Testing Tools
+            Hardware Testing Tools
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Free, comprehensive testing suite for your device performance. Diagnose issues with your mouse, keyboard, display, and audio devices with our easy-to-use online tools.
           </p>
         </div>
 
-        {/* Introduction Section */}
-        <section className="mb-16">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Why Test Your Hardware?</h2>
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
-              <div className="flex flex-col items-center text-center p-4">
-                <div className="text-4xl mb-3">🔍</div>
-                <h3 className="text-lg font-semibold mb-2">Identify Issues Early</h3>
-                <p className="text-gray-600 dark:text-gray-300">Detect hardware problems before they cause system failures or affect your productivity.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-4">
-                <div className="text-4xl mb-3">🎮</div>
-                <h3 className="text-lg font-semibold mb-2">Optimize for Gaming</h3>
-                <p className="text-gray-600 dark:text-gray-300">Ensure your peripherals are performing optimally for competitive gaming scenarios.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-4">
-                <div className="text-4xl mb-3">💼</div>
-                <h3 className="text-lg font-semibold mb-2">Workplace Efficiency</h3>
-                <p className="text-gray-600 dark:text-gray-300">Confirm your work setup is functioning correctly for maximum productivity.</p>
-              </div>
-            </div>
-            <p className="text-gray-700 dark:text-gray-300">
-              Our hardware testing tools are designed to help you quickly diagnose common hardware issues. Whether you're a gamer concerned about mouse performance, a professional needing reliable peripherals, or just want to ensure your device is working properly, our suite of tools provides accurate measurements and diagnostics.
-            </p>
+        {/* Stats Section */}
+        <div className="grid grid-cols-3 gap-6 mb-16">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">8+</p>
+            <p className="text-gray-600 dark:text-gray-300">Testing Tools</p>
           </div>
-        </section>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">4</p>
+            <p className="text-gray-600 dark:text-gray-300">Device Categories</p>
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">5K+</p>
+            <p className="text-gray-600 dark:text-gray-300">Satisfied Users</p>
+          </div>
+        </div>
 
         {/* Hardware testing tool cards */}
         <section className="mb-16">
@@ -275,6 +264,101 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+          </div>
+        </section>
+
+        {/* Why Use Section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Why Use Hardware Testing Tools?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Accurate Diagnostics</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Our testing tools provide precise measurements and detailed performance analysis to identify hardware issues before they become major problems.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">No Installation Needed</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Access all testing tools directly in your browser without downloading or installing any software. Quick and convenient testing anytime, anywhere.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">User-Friendly Interface</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Simple, intuitive controls make it easy for anyone to test their hardware, regardless of technical expertise. Clear results help you understand your device performance.
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        {/* How to Use Section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">How to Use Hardware Testing Tools</h2>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-500 dark:text-blue-300 text-xl font-bold mb-4">1</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Select Test</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Choose the appropriate test for your hardware component from our complete testing suite.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-500 dark:text-blue-300 text-xl font-bold mb-4">2</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Start Testing</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Follow the on-screen instructions to begin the test. Interact with your device as directed.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-500 dark:text-blue-300 text-xl font-bold mb-4">3</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">View Results</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Analyze the real-time data and performance metrics displayed during and after the test.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-500 dark:text-blue-300 text-xl font-bold mb-4">4</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Fix Issues</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Use the diagnostic information to identify and resolve hardware problems or optimize performance.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Categories Section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Featured Test Categories</h2>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <div className="text-4xl mb-4 text-center">🖱️</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white text-center">Mouse Tests</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Comprehensive mouse diagnostics including click speed, double-click functionality, and movement precision tests.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <div className="text-4xl mb-4 text-center">⌨️</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white text-center">Keyboard Tests</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Key response tests, typing speed measurements, and key bounce detection for all keyboard types.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <div className="text-4xl mb-4 text-center">🎧</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white text-center">Audio Tests</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Sound quality analysis, channel balance verification, and microphone sensitivity testing.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <div className="text-4xl mb-4 text-center">🖥️</div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white text-center">Display Tests</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Screen calibration, dead pixel detection, and refresh rate verification for monitors and displays.
+              </p>
+            </div>
           </div>
         </section>
         
@@ -424,9 +508,9 @@ export default function Home() {
 
         {/* FAQ Section */}
         <section className="mb-16">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+            <div className="space-y-8">
               <div>
                 <h3 className="text-lg font-semibold mb-2">How accurate are these hardware tests?</h3>
                 <p className="text-gray-600 dark:text-gray-300">
@@ -451,6 +535,24 @@ export default function Home() {
                   No, all our hardware testing tools run directly in your web browser without requiring any downloads or installations. Simply visit the page for the test you want to run and follow the on-screen instructions.
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="mb-16 text-center">
+          <div className="bg-blue-600 dark:bg-blue-700 p-10 rounded-xl shadow-md text-white">
+            <h2 className="text-3xl font-bold mb-4">Ready to Test Your Hardware?</h2>
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
+              Select a test from our comprehensive suite and start diagnosing your hardware performance today.
+            </p>
+            <div className="flex justify-center space-x-4">
+              <a href="/mouse-click" className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all">
+                Start Testing Now
+              </a>
+              <a href="/about" className="border border-white text-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-semibold transition-all">
+                Learn More
+              </a>
             </div>
           </div>
         </section>
