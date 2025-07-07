@@ -2,17 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from "next/link";
+import Script from "next/script";
 
 export default function Home() {
   const hardwareChecks = [
-    { name: "Mouse Click Counter", path: "/mouse-click", icon: "🖱️", description: "Detect mouse click speed and clicks per second (CPS)" },
-    { name: "Mouse Double Click Test", path: "/mouse-double-click", icon: "🖱️", description: "Test mouse left/right double click function and response interval" },
-    { name: "Mouse Movement Test", path: "/mouse-move", icon: "🖱️", description: "Test mouse movement smoothness and precision" },
-    { name: "Keyboard Counter Test", path: "/keyboard", icon: "⌨️", description: "Test keyboard press speed and keys per second (KPS)" },
-    { name: "Keyboard Double Press Test", path: "/keyboard-double", icon: "⌨️", description: "Test if keyboard can double press, detect repeated input issues" },
-    { name: "Headphone Sound Test", path: "/audio", icon: "🎧", description: "Test headphone sound quality and balance" },
-    { name: "Microphone Test", path: "/microphone", icon: "🎤", description: "Test microphone sound quality and sensitivity" },
-    { name: "Display Test", path: "/display", icon: "🖥️", description: "Test screen brightness, color and refresh rate" },
+    { name: "Mouse Click Counter", path: "/mouse-click", icon: "🖱️", description: "Test mouse click speed and count clicks per second (CPS). Identify potential issues with your mouse clicking mechanism." },
+    { name: "Mouse Double Click Test", path: "/mouse-double-click", icon: "🖱️", description: "Diagnose double-click functionality and measure response interval. Perfect for testing gaming mice performance." },
+    { name: "Mouse Movement Test", path: "/mouse-move", icon: "🖱️", description: "Analyze cursor movement smoothness and precision. Detect tracking issues and sensor performance problems." },
+    { name: "Keyboard Counter Test", path: "/keyboard", icon: "⌨️", description: "Measure keyboard press speed and keys per second (KPS). Great for gamers and typing enthusiasts." },
+    { name: "Keyboard Double Press Test", path: "/keyboard-double", icon: "⌨️", description: "Check for keyboard bounce issues and detect repeated input problems. Essential for mechanical keyboard testing." },
+    { name: "Headphone Sound Test", path: "/audio", icon: "🎧", description: "Verify audio quality, channel balance and frequency response. Ensure your headphones deliver optimal sound." },
+    { name: "Microphone Test", path: "/microphone", icon: "🎤", description: "Check microphone sensitivity, clarity and audio capture quality. Perfect for testing video call setup." },
+    { name: "Display Test", path: "/display", icon: "🖥️", description: "Examine screen brightness, color accuracy, dead pixels and refresh rate. Comprehensive monitor diagnostics." },
   ];
   
   // ========= Mouse Click Counter Test =========
@@ -191,181 +192,275 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      {/* Add structured data for rich results */}
+      <Script id="structured-data" type="application/ld+json">
+        {`
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Hardware Testing Tools",
+            "description": "Free online tools for testing computer hardware including mouse, keyboard, display, and audio devices",
+            "applicationCategory": "UtilityApplication",
+            "operatingSystem": "Any",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          }
+        `}
+      </Script>
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Hardware Testing Tools
+            Online Hardware Testing Tools
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            Comprehensive testing of your device performance for optimal user experience
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Free, comprehensive testing suite for your device performance. Diagnose issues with your mouse, keyboard, display, and audio devices with our easy-to-use online tools.
           </p>
         </div>
 
-        {/* Hardware testing tool cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {hardwareChecks.map((check) => (
-            <Link 
-              href={check.path} 
-              key={check.path}
-              className="block group h-full"
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 flex flex-col">
-                <div className="flex items-center h-14 mb-2">
-                  <span className="text-3xl mr-3">{check.icon}</span>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
-                    {check.name}
-                  </h2>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-2">
-                  {check.description}
-                </p>
-                <div className="flex justify-end mt-auto">
-                  <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200 text-sm">
-                    Start Test →
-                  </span>
-                </div>
+        {/* Introduction Section */}
+        <section className="mb-16">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Why Test Your Hardware?</h2>
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+              <div className="flex flex-col items-center text-center p-4">
+                <div className="text-4xl mb-3">🔍</div>
+                <h3 className="text-lg font-semibold mb-2">Identify Issues Early</h3>
+                <p className="text-gray-600 dark:text-gray-300">Detect hardware problems before they cause system failures or affect your productivity.</p>
               </div>
-            </Link>
-          ))}
-        </div>
+              <div className="flex flex-col items-center text-center p-4">
+                <div className="text-4xl mb-3">🎮</div>
+                <h3 className="text-lg font-semibold mb-2">Optimize for Gaming</h3>
+                <p className="text-gray-600 dark:text-gray-300">Ensure your peripherals are performing optimally for competitive gaming scenarios.</p>
+              </div>
+              <div className="flex flex-col items-center text-center p-4">
+                <div className="text-4xl mb-3">💼</div>
+                <h3 className="text-lg font-semibold mb-2">Workplace Efficiency</h3>
+                <p className="text-gray-600 dark:text-gray-300">Confirm your work setup is functioning correctly for maximum productivity.</p>
+              </div>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300">
+              Our hardware testing tools are designed to help you quickly diagnose common hardware issues. Whether you're a gamer concerned about mouse performance, a professional needing reliable peripherals, or just want to ensure your device is working properly, our suite of tools provides accurate measurements and diagnostics.
+            </p>
+          </div>
+        </section>
+
+        {/* Hardware testing tool cards */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Complete Testing Suite</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {hardwareChecks.map((check) => (
+              <Link 
+                href={check.path} 
+                key={check.path}
+                className="block group h-full"
+              >
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 h-full border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 flex flex-col">
+                  <div className="flex items-center h-14 mb-2">
+                    <span className="text-3xl mr-3">{check.icon}</span>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+                      {check.name}
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                    {check.description}
+                  </p>
+                  <div className="flex justify-end mt-auto">
+                    <span className="text-blue-500 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform duration-200 text-sm">
+                      Start Test →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
         
         {/* Test module area */}
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Quick Tools</h2>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-          {/* Mouse click counter test */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
-            <div className="p-6 h-full flex flex-col">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Click Counter</h2>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Clicks</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{clicks}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Clicks Per Second</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{cps}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Max CPS</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{maxCps}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Time Left</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{timeLeft}s</div>
-                </div>
-              </div>
-              
-              <button
-                onClick={handleClick}
-                disabled={timeLeft === 0}
-                className={`w-full py-4 mb-4 text-xl font-bold rounded-lg transition-all flex-grow ${
-                  isActive 
-                    ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-                    : timeLeft === 0 
-                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400' 
-                      : 'bg-blue-500 hover:bg-blue-600 text-white'
-                }`}
-              >
-                {!isActive && timeLeft === 10 ? 'Click to Start Test' : isActive ? 'Click Here Quickly!' : 'Test Completed'}
-              </button>
-              
-              {timeLeft === 0 && (
-                <button
-                  onClick={resetClickTest}
-                  className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
-                >
-                  Test Again
-                </button>
-              )}
-            </div>
-          </div>
-          
-          {/* Mouse double click test */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
-            <div className="p-6 h-full">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Double Click Test</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Left Clicks</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftClicks}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Left Double Clicks</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftDoubleClicks}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Right Clicks</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightClicks}</div>
-                </div>
-                <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Right Double Clicks</div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightDoubleClicks}</div>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Double Click Interval (milliseconds)</label>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{doubleClickInterval} ms</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="50" 
-                  max="500" 
-                  step="10" 
-                  value={doubleClickInterval} 
-                  onChange={(e) => setDoubleClickInterval(parseInt(e.target.value))} 
-                  className="w-full h-2 bg-green-500 rounded-lg appearance-none cursor-pointer"
-                />
-                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  <span>50ms</span>
-                  <span>500ms</span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div 
-                  className="bg-red-500 hover:bg-red-400 rounded-lg h-32 flex items-center justify-center cursor-pointer transition-colors duration-200"
-                  onClick={handleLeftClick}
-                  onContextMenu={handleRightClick}
-                >
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                      <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
-                    </div>
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Quick Tools</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Mouse click counter test */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
+              <div className="p-6 h-full flex flex-col">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Click Counter</h2>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Clicks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{clicks}</div>
                   </div>
-                  <p className="absolute text-white font-medium">Left Click Test Area</p>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Clicks Per Second</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{cps}</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Max CPS</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{maxCps}</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Time Left</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{timeLeft}s</div>
+                  </div>
                 </div>
                 
-                <div 
-                  className="bg-red-500 hover:bg-red-400 rounded-lg h-32 flex items-center justify-center cursor-pointer transition-colors duration-200"
-                  onClick={handleLeftClick}
-                  onContextMenu={handleRightClick}
+                <button
+                  onClick={handleClick}
+                  disabled={timeLeft === 0}
+                  className={`w-full py-4 mb-4 text-xl font-bold rounded-lg transition-all flex-grow ${
+                    isActive 
+                      ? 'bg-blue-500 hover:bg-blue-600 text-white' 
+                      : timeLeft === 0 
+                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400' 
+                        : 'bg-blue-500 hover:bg-blue-600 text-white'
+                  }`}
                 >
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                      <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
-                    </div>
-                  </div>
-                  <p className="absolute text-white font-medium">Right Click Test Area</p>
+                  {!isActive && timeLeft === 10 ? 'Click to Start Test' : isActive ? 'Click Here Quickly!' : 'Test Completed'}
+                </button>
+                
+                {timeLeft === 0 && (
+                  <button
+                    onClick={resetClickTest}
+                    className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
+                  >
+                    Test Again
+                  </button>
+                )}
+                <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                  <p>
+                    <a href="/mouse-click" className="text-blue-500 hover:underline">View full test details →</a>
+                  </p>
                 </div>
               </div>
-              
-              <button
-                onClick={resetDoubleClickTest}
-                className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
-              >
-                Reset Test
-              </button>
+            </div>
+            
+            {/* Mouse double click test */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden h-full">
+              <div className="p-6 h-full">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Mouse Double Click Test</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Left Clicks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftClicks}</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Left Double Clicks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{leftDoubleClicks}</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Right Clicks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightClicks}</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Right Double Clicks</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{rightDoubleClicks}</div>
+                  </div>
+                </div>
+                
+                <div className="mb-6">
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Double Click Interval (milliseconds)</label>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{doubleClickInterval} ms</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="50" 
+                    max="500" 
+                    step="10" 
+                    value={doubleClickInterval} 
+                    onChange={(e) => setDoubleClickInterval(parseInt(e.target.value))} 
+                    className="w-full h-2 bg-green-500 rounded-lg appearance-none cursor-pointer"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <span>50ms</span>
+                    <span>500ms</span>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div 
+                    className="bg-red-500 hover:bg-red-400 rounded-lg h-32 flex items-center justify-center cursor-pointer transition-colors duration-200"
+                    onClick={handleLeftClick}
+                    onContextMenu={handleRightClick}
+                  >
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
+                      </div>
+                    </div>
+                    <p className="absolute text-white font-medium">Left Click Test Area</p>
+                  </div>
+                  
+                  <div 
+                    className="bg-red-500 hover:bg-red-400 rounded-lg h-32 flex items-center justify-center cursor-pointer transition-colors duration-200"
+                    onClick={handleLeftClick}
+                    onContextMenu={handleRightClick}
+                  >
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full"></div>
+                      </div>
+                    </div>
+                    <p className="absolute text-white font-medium">Right Click Test Area</p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={resetDoubleClickTest}
+                  className="w-full py-3 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-lg transition-all"
+                >
+                  Reset Test
+                </button>
+                <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                  <p>
+                    <a href="/mouse-double-click" className="text-blue-500 hover:underline">View full test details →</a>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mt-16 text-center">
+        {/* FAQ Section */}
+        <section className="mb-16">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">How accurate are these hardware tests?</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Our tests are designed to provide accurate measurements of your hardware performance within the constraints of browser-based testing. While they may not be as precise as specialized software, they offer reliable indicators of potential issues.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Why is my mouse click test showing lower CPS than expected?</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  CPS (Clicks Per Second) can be affected by several factors including your mouse hardware, browser performance, and system resources. Try running the test in different browsers or after restarting your computer for more consistent results.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Can these tests help diagnose hardware failures?</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Yes, our tests can help identify many common hardware issues. For example, the double-click test can reveal when a mouse button is failing, and the keyboard test can identify sticky or unresponsive keys.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Do I need to install any software to use these tools?</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  No, all our hardware testing tools run directly in your web browser without requiring any downloads or installations. Simply visit the page for the test you want to run and follow the on-screen instructions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400">
             Professional Hardware Testing Tools | Test Your Device Performance Anytime, Anywhere
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Last Updated: June 2025 | <a href="/blog" className="text-blue-500 hover:underline">Read our hardware testing blog</a>
           </p>
         </div>
       </main>

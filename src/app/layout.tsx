@@ -6,8 +6,18 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Hardware Testing Tools",
-  description: "Comprehensive testing of your device performance for optimal user experience",
+  title: "Free Online Hardware Testing Tools | Test Mouse, Keyboard, Display & Audio",
+  description: "Professional hardware testing tools for mouse clicks, keyboard input, display quality and audio performance. Quickly check your computer hardware to ensure optimal performance.",
+  keywords: "hardware testing, mouse click test, keyboard test, display test, audio test, microphone test, hardware testing tools, online hardware test",
+  authors: [{ name: "Hardware Testing Tools Team" }],
+  openGraph: {
+    title: "Professional Online Hardware Testing Tools | Free Device Performance Check",
+    description: "All-in-one solution to test mouse, keyboard, display and audio device performance. Use our online tools to check if your hardware is working properly.",
+    url: "https://hwcheck.mygrow.top",
+    siteName: "Hardware Testing Tools",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +31,7 @@ export default function RootLayout({
         <meta charSet="utf-8" />
         <meta name="google-site-verification" content="wqPP3gwO0ZH_hSXwMq53HHJk6J-rnFN2DukruHBFMWA" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://hwcheck.mygrow.top/" />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-KNH2V68QVH"
@@ -78,6 +89,12 @@ export default function RootLayout({
         <footer className="mt-auto py-6 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
           <div className="container mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
             <p>© {new Date().getFullYear()} Hardware Testing Tools | All Rights Reserved</p>
+            <div className="mt-2 space-x-4">
+              <a href="/about" className="hover:text-blue-500">About</a>
+              <a href="/privacy" className="hover:text-blue-500">Privacy Policy</a>
+              <a href="/terms" className="hover:text-blue-500">Terms of Use</a>
+              <a href="/contact" className="hover:text-blue-500">Contact Us</a>
+            </div>
           </div>
         </footer>
       </body>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hwcheck.mygrow.top/static/sitemap.xml 
+Sitemap: https://hwcheck.mygrow.top/sitemap.xml 
